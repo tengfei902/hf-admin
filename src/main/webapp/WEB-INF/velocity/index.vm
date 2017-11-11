@@ -29,17 +29,15 @@
         </div>
         <div class="col-lg-7 col-md-8 col-sm-9 col-xs-6 head-right">
             <div class="hidden-xs">
-                <a href="/" class="index">网站首页</a>
-                <a href="/Admin_Index_clearCache.html" class="qchc">清除缓存</a>
-                <a href="javascript:;" onclick="reset_pwd('修改密码','/Admin_System_editPassword.html',360,320)" class="edit">修改密码</a>
-                <a href="/Admin_Login_loginout.html" class="loginout">退出</a>
+                <a href="javascript:;" onclick="reset_pwd('修改密码','#springUrl('/common/admin_edit_password')',360,320)" class="edit">修改密码</a>
+                <a href="#springUrl('/user/logout')" class="loginout">退出</a>
             </div>
             <div class="dropdown ">
     		<span class="clear">
 	            <span class="block m-t-xs">
-	                adminroot	            </span>
+	                ${name}	            </span>
 	            <span class="text-muted text-xs block">
-	                总管理员	            </span>
+	                管理员	            </span>
             </span>
             </div>
             <div class="userimg hidden">
@@ -88,11 +86,6 @@
                     <li><a href="#springUrl('/common/admin_withdrawal_payment')" class="J_menuItem">代付管理</a></li>
                 </ul>
                 </li>
-                <li class="nav-menu"><a href="#"> <i class="fa fa-book"></i> <span class="nav-label">文章管理</span></a>
-                <ul class="nav nav-second-level">
-                    <li><a href="/Admin_Content_category.html" class="J_menuItem">栏目管理</a></li>
-                    <li><a href="/Admin_Content_article.html" class="J_menuItem">文章管理</a></li>
-                </ul>
                 </li><li class="nav-menu"><a href="#"> <i class="fa fa-book"></i> <span class="nav-label">代理管理</span>
             </a>
                 <ul class="nav nav-second-level">

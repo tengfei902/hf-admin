@@ -18,11 +18,12 @@
     </context:component-scan>
     <mvc:default-servlet-handler/>
 
-    <!--<mvc:interceptors>-->
-        <!--<mvc:interceptor>-->
-            <!--<mvc:mapping path="/account/*"/>-->
-            <!--<mvc:mapping path="/pay/*"/>-->
-            <!--<beans:bean class="jh.interceptor.UserInterceptor"/>-->
-        <!--</mvc:interceptor>-->
-    <!--</mvc:interceptors>-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/common/*"/>
+            <mvc:mapping path="/user/*"/>
+            <mvc:exclude-mapping path="/user/login"/>
+            <beans:bean class="hf.admin.service.interceptor.UserIntercepter"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 </beans:beans>

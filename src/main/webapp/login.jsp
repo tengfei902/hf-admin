@@ -44,14 +44,14 @@
 <div class="login login-layout" id="login">
     <div>
         <h3 style="color:#FFF;font-size:20px">威付宝支付系统管理后台欢迎您</h3>
-        <form class="layui-form" method="post" action="/Admin_Login_checkLogin.html" autocomplete="off" id="loginform">
+        <form class="layui-form" method="post" action="/admin/user/login" autocomplete="off" id="loginform">
             <div class="layui-input-block user-name">
                 <img src="Public/Admin/images/user.png" class="before">
-                <input type="text" class="layui-input" id="username" lay-verify="required" name="username" placeholder="用户名" >
+                <input type="text" class="layui-input" id="username" lay-verify="required" name="loginId" placeholder="用户名" >
             </div>
             <div class="layui-input-block pwd">
                 <img src="Public/Admin/images/pass.png" class="before">
-                <input type="password" class="layui-input" id="loginpassword" lay-verify="required" name="loginpassword" placeholder="密码">
+                <input type="password" class="layui-input" id="password" lay-verify="required" name="password" placeholder="密码">
             </div>
             <div class="layui-input-block btn">
                 <button type="submit" class="layui-btn" lay-submit lay-filter="login" id="loginbutton">登 录</button>

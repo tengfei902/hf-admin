@@ -1,20 +1,33 @@
 package hf.admin.service;
 
-import com.google.gson.reflect.TypeToken;
+import hf.admin.enums.UserType;
+import hf.admin.model.UserInfo;
 import hf.admin.model.UserInfoDto;
 import hf.admin.model.UserInfoRequest;
+import hf.admin.rpc.HfClient;
+import hf.admin.service.common.CacheService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
 @Service
 public class UserService {
-
-    private static final String HF_APP_URL = "http://127.0.0.1:8090/jh/user/get_user_list";
+    @Autowired
+    private HfClient hfClient;
+    @Autowired
+    private CacheService cacheService;
 
     public List<UserInfoDto> getUserListForAdmin(UserInfoRequest request) {
-        RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.getForObject(HF_APP_URL, List.class,request);
+        return hfClient.getUserListForAdmin(request);
     }
+
+    public UserInfo getUserInfo(String loginId, String password,UserType userType) {
+        UserInfo userInfo = hfClient.getUserInfo(loginId,password,userType.getValue());
+        return userInfo;
+    }
+
+//    public boolean editPassword(String userId,String ypassword,String newpassword,String newpasswordok) {
+//
+//    }
 }

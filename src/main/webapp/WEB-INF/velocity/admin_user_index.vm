@@ -35,20 +35,20 @@
                 </div>
                 <!--条件查询-->
                 <div class="ibox-content">
-                    <form class="layui-form" action="" method="get" autocomplete="off">
+                    <form class="layui-form" action="#springUrl('/user/get_user_list')" method="get" autocomplete="off">
                         <input type="hidden" name="m" value="Admin">
                         <input type="hidden" name="c" value="User">
                         <input type="hidden" name="a" value="index">
                         <div class="layui-form-item">
                             <div class="layui-inline">
                                 <div class="layui-input-inline">
-                                    <input type="text" name="username" autocomplete="off" placeholder="商户号或用户名"
+                                    <input type="text" name="user" autocomplete="off" placeholder="商户号或用户名"
                                            class="layui-input" value="">
                                 </div>
                             </div>
                             <div class="layui-inline">
                                 <div class="layui-input-inline">
-                                    <input type="text" name="parentid" autocomplete="off" placeholder="代理号或用户名"
+                                    <input type="text" name="agent" autocomplete="off" placeholder="代理号或用户名"
                                            class="layui-input" value="">
                                 </div>
                             </div>
@@ -56,40 +56,24 @@
                                 <div class="layui-input-inline">
                                     <select name="status">
                                         <option value="">状态</option>
-                                        <option value="1">已激活</option>
-                                        <option value="0">未激活</option>
+                                        <option value="0">资料不全</option>
+                                        <option value="1">未认证</option>
+                                        <option value="2">已认证</option>
                                         <option value="2">禁用</option>
                                     </select>
                                 </div>
                                 <div class="layui-input-inline">
-                                    <select name="authorized">
-                                        <option value="">认证</option>
-                                        <option value="0">未认证</option>
-                                        <option value="2">等待审核</option>
-                                        <option value="1">认证用户</option>
-                                    </select>
-                                </div>
-                                <div class="layui-input-inline">
-                                    <select name="groupid">
+                                    <select name="type">
                                         <option value="">用户类型</option>
-                                        <option value="4">普通商户</option>
-                                        <option value="5">普通代理商</option>
+                                        <option value="3">普通商户</option>
+                                        <option value="2">普通代理商</option>
                                     </select>
-                                </div>
-                            </div>
-                            <div class="layui-inline">
-                                <div class="layui-input-inline">
-                                    <input type="text" class="layui-input" name="regdatetime" id="regtime"
-                                           placeholder="起始时间">
                                 </div>
                             </div>
                             <div class="layui-inline">
                                 <button type="submit" class="layui-btn lineblud"><span
                                         class="glyphicon glyphicon-search"></span> 搜索
                                 </button>
-                                <a href="javascript:;" id="export"
-                                   class="layui-btn layui-btn-danger"><span
-                                        class="glyphicon glyphicon-export pink"></span> 导出数据</a>
                             </div>
                         </div>
                     </form>
@@ -110,25 +94,27 @@
                         </tr>
                         </thead>
                         <tbody>
+
+                        #foreach($user in $users)
+
                         <tr>
-                            <td>33</td>
-                            <td>10033</td>
-                            <td>fierceagle</td>
-                            <td>普通商户</td>
-                            <td>总管理员</td>
+                            <td>${user.userId}</td>
+                            <td>${user.userNo}</td>
+                            <td>${user.name}</td>
+                            <td>${user.type}</td>
+                            <td>${user.subUserName}</td>
                             <td><a href="javascript:;" style="display:block;margin-top:3">
                                 <input type="checkbox"
                                        data-uid="33"
-                                       checked                                    name="open"
+                                       checked
+                                       name="open"
                                        lay-skin="switch"
                                        lay-filter="switchStatus"
                                        lay-text="正常|禁用">
                             </a>
                             </td>
-                            <td><a style="display:block;margin-top:10px;" href="javascript:member_auth('用户认证','/Admin_User_authorize_uid_33.html','',320)">
-                                <span class="label label-default blud" style="margin-top:6px;">未认证</span>                                </a></td>
-                            <td><div title="用户资金管理"
-                                     onclick="member_money('商户：fierceagle','/Admin_User_usermoney_userid_33.html',800,600)">可提现：0.00 冻结：0.00</div></td>
+                            <td><span class="label label-default blud" style="margin-top:6px;">${user.statusDesc}</span></td>
+                            <td><div title="用户资金管理">可提现：#if (!${user.amount}) 0.00 #else ${user.amount} #end 冻结：#if(!${user.lockAmount}) 0.00 #else ${user.lockAmount} #end</div></td>
                             <td>2017-11-09</td>
                             <td>
                                 <div class="layui-btn-group">
@@ -146,331 +132,9 @@
                                     <button class="layui-btn layui-btn-small lineblud" onclick="member_peizhi('指派通道','/Admin_User_peizhi_uid_33.html',800,600)">指定通道配置</button>
                                 </div>
                             </td>
-                        </tr><tr>
-                            <td>32</td>
-                            <td><a href="/Admin_User_changeuser_userid_32.html" target="_blank">10032</a></td>
-                            <td>fierceagle</td>
-                            <td>普通商户</td>
-                            <td>总管理员</td>
-                            <td><a href="javascript:;" style="display:block;margin-top:3">
-                                <input type="checkbox"
-                                       data-uid="32"
-                                       name="open"
-                                       lay-skin="switch"
-                                       lay-filter="switchStatus"
-                                       lay-text="正常|禁用">
-                            </a>
-                            </td>
-                            <td><a style="display:block;margin-top:10px;" href="javascript:member_auth('用户认证','/Admin_User_authorize_uid_32.html','',320)">
-                                <span class="label label-default blud" style="margin-top:6px;">未认证</span>                                </a></td>
-                            <td><div title="用户资金管理"
-                                     onclick="member_money('商户：fierceagle','/Admin_User_usermoney_userid_32.html',800,600)">可提现：0.00 冻结：0.00</div></td>
-                            <td>2017-11-09</td>
-                            <td>
-                                <div class="layui-btn-group">
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_withdrawal('提现设置',
-                                                '/Admin_User_userWithdrawal_uid_32.html')">提现</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('编辑通道','/Admin_User_editUserProduct_uid_32.html',800)"
-                                    >通道</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_rate('编辑费率','/Admin_User_userRateEdit_uid_32.html',640,480)">费率</button>
-                                    <button class="layui-btn layui-btn-small lineblud"
-                                            onclick="member_edit('编辑','/Admin_User_editPassword_uid_32.html',800,540)"
-                                    >密码</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('编辑','/Admin_User_editUser_uid_32.html',800,600)"
-                                    >编辑</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_del(this,'32')">删除</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_peizhi('指派通道','/Admin_User_peizhi_uid_32.html',800,600)">指定通道配置</button>
-                                </div>
-                            </td>
-                        </tr><tr>
-                            <td>31</td>
-                            <td><a href="/Admin_User_changeuser_userid_31.html" target="_blank">10031</a></td>
-                            <td>root1</td>
-                            <td>普通商户</td>
-                            <td>总管理员</td>
-                            <td><a href="javascript:;" style="display:block;margin-top:3">
-                                <input type="checkbox"
-                                       data-uid="31"
-                                       checked                                    name="open"
-                                       lay-skin="switch"
-                                       lay-filter="switchStatus"
-                                       lay-text="正常|禁用">
-                            </a>
-                            </td>
-                            <td><a style="display:block;margin-top:10px;" href="javascript:member_auth('用户认证','/Admin_User_authorize_uid_31.html','',320)">
-                                <span class="label label-success deepblud">已认证</span>                                </a></td>
-                            <td><div title="用户资金管理"
-                                     onclick="member_money('商户：root1','/Admin_User_usermoney_userid_31.html',800,600)">可提现：0.00 冻结：0.00</div></td>
-                            <td>2017-11-08</td>
-                            <td>
-                                <div class="layui-btn-group">
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_withdrawal('提现设置',
-                                                '/Admin_User_userWithdrawal_uid_31.html')">提现</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('编辑通道','/Admin_User_editUserProduct_uid_31.html',800)"
-                                    >通道</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_rate('编辑费率','/Admin_User_userRateEdit_uid_31.html',640,480)">费率</button>
-                                    <button class="layui-btn layui-btn-small lineblud"
-                                            onclick="member_edit('编辑','/Admin_User_editPassword_uid_31.html',800,540)"
-                                    >密码</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('编辑','/Admin_User_editUser_uid_31.html',800,600)"
-                                    >编辑</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_del(this,'31')">删除</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_peizhi('指派通道','/Admin_User_peizhi_uid_31.html',800,600)">指定通道配置</button>
-                                </div>
-                            </td>
-                        </tr><tr>
-                            <td>30</td>
-                            <td><a href="/Admin_User_changeuser_userid_30.html" target="_blank">10030</a></td>
-                            <td>username</td>
-                            <td>普通商户</td>
-                            <td>总管理员</td>
-                            <td><a href="javascript:;" style="display:block;margin-top:3">
-                                <input type="checkbox"
-                                       data-uid="30"
-                                       name="open"
-                                       lay-skin="switch"
-                                       lay-filter="switchStatus"
-                                       lay-text="正常|禁用">
-                            </a>
-                            </td>
-                            <td><a style="display:block;margin-top:10px;" href="javascript:member_auth('用户认证','/Admin_User_authorize_uid_30.html','',320)">
-                                <span class="label label-default blud" style="margin-top:6px;">未认证</span>                                </a></td>
-                            <td><div title="用户资金管理"
-                                     onclick="member_money('商户：username','/Admin_User_usermoney_userid_30.html',800,600)">可提现：0.00 冻结：0.00</div></td>
-                            <td>2017-11-08</td>
-                            <td>
-                                <div class="layui-btn-group">
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_withdrawal('提现设置',
-                                                '/Admin_User_userWithdrawal_uid_30.html')">提现</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('编辑通道','/Admin_User_editUserProduct_uid_30.html',800)"
-                                    >通道</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_rate('编辑费率','/Admin_User_userRateEdit_uid_30.html',640,480)">费率</button>
-                                    <button class="layui-btn layui-btn-small lineblud"
-                                            onclick="member_edit('编辑','/Admin_User_editPassword_uid_30.html',800,540)"
-                                    >密码</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('编辑','/Admin_User_editUser_uid_30.html',800,600)"
-                                    >编辑</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_del(this,'30')">删除</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_peizhi('指派通道','/Admin_User_peizhi_uid_30.html',800,600)">指定通道配置</button>
-                                </div>
-                            </td>
-                        </tr><tr>
-                            <td>29</td>
-                            <td><a href="/Admin_User_changeuser_userid_29.html" target="_blank">10029</a></td>
-                            <td>admin</td>
-                            <td>普通商户</td>
-                            <td><a href="/Admin_User_index_username_demouser.html">demouser</a></td>
-                            <td><a href="javascript:;" style="display:block;margin-top:3">
-                                <input type="checkbox"
-                                       data-uid="29"
-                                       checked                                    name="open"
-                                       lay-skin="switch"
-                                       lay-filter="switchStatus"
-                                       lay-text="正常|禁用">
-                            </a>
-                            </td>
-                            <td><a style="display:block;margin-top:10px;" href="javascript:member_auth('用户认证','/Admin_User_authorize_uid_29.html','',320)">
-                                <span class="label label-warning deepblud">等待审核</span>                                </a></td>
-                            <td><div title="用户资金管理"
-                                     onclick="member_money('商户：admin','/Admin_User_usermoney_userid_29.html',800,600)">可提现：0.00 冻结：0.00</div></td>
-                            <td>2017-11-07</td>
-                            <td>
-                                <div class="layui-btn-group">
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_withdrawal('提现设置',
-                                                '/Admin_User_userWithdrawal_uid_29.html')">提现</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('编辑通道','/Admin_User_editUserProduct_uid_29.html',800)"
-                                    >通道</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_rate('编辑费率','/Admin_User_userRateEdit_uid_29.html',640,480)">费率</button>
-                                    <button class="layui-btn layui-btn-small lineblud"
-                                            onclick="member_edit('编辑','/Admin_User_editPassword_uid_29.html',800,540)"
-                                    >密码</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('编辑','/Admin_User_editUser_uid_29.html',800,600)"
-                                    >编辑</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_del(this,'29')">删除</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_peizhi('指派通道','/Admin_User_peizhi_uid_29.html',800,600)">指定通道配置</button>
-                                </div>
-                            </td>
-                        </tr><tr>
-                            <td>28</td>
-                            <td><a href="/Admin_User_changeuser_userid_28.html" target="_blank">10028</a></td>
-                            <td>abc9999</td>
-                            <td>普通商户</td>
-                            <td>总管理员</td>
-                            <td><a href="javascript:;" style="display:block;margin-top:3">
-                                <input type="checkbox"
-                                       data-uid="28"
-                                       name="open"
-                                       lay-skin="switch"
-                                       lay-filter="switchStatus"
-                                       lay-text="正常|禁用">
-                            </a>
-                            </td>
-                            <td><a style="display:block;margin-top:10px;" href="javascript:member_auth('用户认证','/Admin_User_authorize_uid_28.html','',320)">
-                                <span class="label label-default blud" style="margin-top:6px;">未认证</span>                                </a></td>
-                            <td><div title="用户资金管理"
-                                     onclick="member_money('商户：abc9999','/Admin_User_usermoney_userid_28.html',800,600)">可提现：0.00 冻结：0.00</div></td>
-                            <td>2017-11-07</td>
-                            <td>
-                                <div class="layui-btn-group">
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_withdrawal('提现设置',
-                                                '/Admin_User_userWithdrawal_uid_28.html')">提现</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('编辑通道','/Admin_User_editUserProduct_uid_28.html',800)"
-                                    >通道</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_rate('编辑费率','/Admin_User_userRateEdit_uid_28.html',640,480)">费率</button>
-                                    <button class="layui-btn layui-btn-small lineblud"
-                                            onclick="member_edit('编辑','/Admin_User_editPassword_uid_28.html',800,540)"
-                                    >密码</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('编辑','/Admin_User_editUser_uid_28.html',800,600)"
-                                    >编辑</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_del(this,'28')">删除</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_peizhi('指派通道','/Admin_User_peizhi_uid_28.html',800,600)">指定通道配置</button>
-                                </div>
-                            </td>
-                        </tr><tr>
-                            <td>27</td>
-                            <td><a href="/Admin_User_changeuser_userid_27.html" target="_blank">10027</a></td>
-                            <td>demouu</td>
-                            <td>普通商户</td>
-                            <td>总管理员</td>
-                            <td><a href="javascript:;" style="display:block;margin-top:3">
-                                <input type="checkbox"
-                                       data-uid="27"
-                                       checked                                    name="open"
-                                       lay-skin="switch"
-                                       lay-filter="switchStatus"
-                                       lay-text="正常|禁用">
-                            </a>
-                            </td>
-                            <td><a style="display:block;margin-top:10px;" href="javascript:member_auth('用户认证','/Admin_User_authorize_uid_27.html','',320)">
-                                <span class="label label-warning deepblud">等待审核</span>                                </a></td>
-                            <td><div title="用户资金管理"
-                                     onclick="member_money('商户：demouu','/Admin_User_usermoney_userid_27.html',800,600)">可提现：0.00 冻结：0.00</div></td>
-                            <td>2017-11-07</td>
-                            <td>
-                                <div class="layui-btn-group">
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_withdrawal('提现设置',
-                                                '/Admin_User_userWithdrawal_uid_27.html')">提现</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('编辑通道','/Admin_User_editUserProduct_uid_27.html',800)"
-                                    >通道</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_rate('编辑费率','/Admin_User_userRateEdit_uid_27.html',640,480)">费率</button>
-                                    <button class="layui-btn layui-btn-small lineblud"
-                                            onclick="member_edit('编辑','/Admin_User_editPassword_uid_27.html',800,540)"
-                                    >密码</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('编辑','/Admin_User_editUser_uid_27.html',800,600)"
-                                    >编辑</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_del(this,'27')">删除</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_peizhi('指派通道','/Admin_User_peizhi_uid_27.html',800,600)">指定通道配置</button>
-                                </div>
-                            </td>
-                        </tr><tr>
-                            <td>26</td>
-                            <td><a href="/Admin_User_changeuser_userid_26.html" target="_blank">10026</a></td>
-                            <td>zhuceceshi</td>
-                            <td>财务管理员</td>
-                            <td>总管理员</td>
-                            <td><a href="javascript:;" style="display:block;margin-top:3">
-                                <input type="checkbox"
-                                       data-uid="26"
-                                       checked                                    name="open"
-                                       lay-skin="switch"
-                                       lay-filter="switchStatus"
-                                       lay-text="正常|禁用">
-                            </a>
-                            </td>
-                            <td><a style="display:block;margin-top:10px;" href="javascript:member_auth('用户认证','/Admin_User_authorize_uid_26.html','',320)">
-                                <span class="label label-warning deepblud">等待审核</span>                                </a></td>
-                            <td><div title="用户资金管理"
-                                     onclick="member_money('商户：zhuceceshi','/Admin_User_usermoney_userid_26.html',800,600)">可提现：0.00 冻结：0.00</div></td>
-                            <td>2017-11-07</td>
-                            <td>
-                                <div class="layui-btn-group">
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_withdrawal('提现设置',
-                                                '/Admin_User_userWithdrawal_uid_26.html')">提现</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('编辑通道','/Admin_User_editUserProduct_uid_26.html',800)"
-                                    >通道</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_rate('编辑费率','/Admin_User_userRateEdit_uid_26.html',640,480)">费率</button>
-                                    <button class="layui-btn layui-btn-small lineblud"
-                                            onclick="member_edit('编辑','/Admin_User_editPassword_uid_26.html',800,540)"
-                                    >密码</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('编辑','/Admin_User_editUser_uid_26.html',800,600)"
-                                    >编辑</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_del(this,'26')">删除</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_peizhi('指派通道','/Admin_User_peizhi_uid_26.html',800,600)">指定通道配置</button>
-                                </div>
-                            </td>
-                        </tr><tr>
-                            <td>25</td>
-                            <td><a href="/Admin_User_changeuser_userid_25.html" target="_blank">10025</a></td>
-                            <td>demouser</td>
-                            <td>普通代理商</td>
-                            <td>总管理员</td>
-                            <td><a href="javascript:;" style="display:block;margin-top:3">
-                                <input type="checkbox"
-                                       data-uid="25"
-                                       checked                                    name="open"
-                                       lay-skin="switch"
-                                       lay-filter="switchStatus"
-                                       lay-text="正常|禁用">
-                            </a>
-                            </td>
-                            <td><a style="display:block;margin-top:10px;" href="javascript:member_auth('用户认证','/Admin_User_authorize_uid_25.html','',320)">
-                                <span class="label label-default blud" style="margin-top:6px;">未认证</span>                                </a></td>
-                            <td><div title="用户资金管理"
-                                     onclick="member_money('商户：demouser','/Admin_User_usermoney_userid_25.html',800,600)">可提现：10.00 冻结：0.00</div></td>
-                            <td>2017-10-23</td>
-                            <td>
-                                <div class="layui-btn-group">
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_withdrawal('提现设置',
-                                                '/Admin_User_userWithdrawal_uid_25.html')">提现</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('编辑通道','/Admin_User_editUserProduct_uid_25.html',800)"
-                                    >通道</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_rate('编辑费率','/Admin_User_userRateEdit_uid_25.html',640,480)">费率</button>
-                                    <button class="layui-btn layui-btn-small lineblud"
-                                            onclick="member_edit('编辑','/Admin_User_editPassword_uid_25.html',800,540)"
-                                    >密码</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('编辑','/Admin_User_editUser_uid_25.html',800,600)"
-                                    >编辑</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_del(this,'25')">删除</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_peizhi('指派通道','/Admin_User_peizhi_uid_25.html',800,600)">指定通道配置</button>
-                                </div>
-                            </td>
-                        </tr><tr>
-                            <td>11</td>
-                            <td><a href="/Admin_User_changeuser_userid_11.html" target="_blank">10011</a></td>
-                            <td>demopay</td>
-                            <td>普通代理商</td>
-                            <td><a href="/Admin_User_index.html"></a></td>
-                            <td><a href="javascript:;" style="display:block;margin-top:3">
-                                <input type="checkbox"
-                                       data-uid="11"
-                                       checked                                    name="open"
-                                       lay-skin="switch"
-                                       lay-filter="switchStatus"
-                                       lay-text="正常|禁用">
-                            </a>
-                            </td>
-                            <td><a style="display:block;margin-top:10px;" href="javascript:member_auth('用户认证','/Admin_User_authorize_uid_11.html','',320)">
-                                <span class="label label-success deepblud">已认证</span>                                </a></td>
-                            <td><div title="用户资金管理"
-                                     onclick="member_money('商户：demopay','/Admin_User_usermoney_userid_11.html',800,600)">可提现：0.07 冻结：0.11</div></td>
-                            <td>2017-09-15</td>
-                            <td>
-                                <div class="layui-btn-group">
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_withdrawal('提现设置',
-                                                '/Admin_User_userWithdrawal_uid_11.html')">提现</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('编辑通道','/Admin_User_editUserProduct_uid_11.html',800)"
-                                    >通道</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_rate('编辑费率','/Admin_User_userRateEdit_uid_11.html',640,480)">费率</button>
-                                    <button class="layui-btn layui-btn-small lineblud"
-                                            onclick="member_edit('编辑','/Admin_User_editPassword_uid_11.html',800,540)"
-                                    >密码</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('编辑','/Admin_User_editUser_uid_11.html',800,600)"
-                                    >编辑</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_del(this,'11')">删除</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_peizhi('指派通道','/Admin_User_peizhi_uid_11.html',800,600)">指定通道配置</button>
-                                </div>
-                            </td>
-                        </tr>                        </tbody>
+                        </tr>
+                        #end
+                        </tbody>
                     </table>
                     <!--用户列表-->
                     <div class="page"><div  class="layui-box layui-laypage layui-laypage-default" id="layui-laypage-0">    </div></div>
