@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="renderer" content="webkit">
-    <title>威付宝支付系统</title>
+    <title>慧付宝支付系统</title>
     <link rel="shortcut icon" href="#springUrl('/favicon.ico')">
     <link href="#springUrl('/Public/Front/css/bootstrap.min.css')" rel="stylesheet">
     <link href="#springUrl('/Public/Front/css/font-awesome.min.css')" rel="stylesheet">
@@ -63,8 +63,8 @@
                 </li>
                 <li class="nav-menu"><a href="#"> <i class="fa fa-user"></i> <span class="nav-label">用户管理</span></a>
                 <ul class="nav nav-second-level">
-                    <li><a href="#springUrl('/common/admin_user_index')" class="J_menuItem">用户管理</a></li>
-                    <li><a href="#springUrl('/common/admin_user_invite')" class="J_menuItem">邀请码管理</a></li>
+                    <li><a href="#springUrl('/common/admin_user_index')" class="J_menuItem">商户管理</a></li>
+                    <li><a href="#springUrl('/common/admin_user_index2')" class="J_menuItem">用户管理</a></li>
                 </ul>
                 </li>
                 <li class="nav-menu"><a href="#"> <i class="fa fa-bank"></i> <span class="nav-label">通道管理</span></a>
@@ -92,11 +92,6 @@
                     <li><a href="#springUrl('/common/admin_Agent_members')" class="J_menuItem">代理管理</a></li>
                 </ul>
             </li>
-                <li class="nav-menu"><a href="#"> <i class="fa fa-home"></i> <span class="nav-label">升级管理</span></a>
-                <ul class="nav nav-second-level">
-                    <li><a href="/Admin_Update_update.html" class="J_menuItem">升级系统</a></li>
-                </ul>
-                </li>
             </ul>
         </div>
     </nav>

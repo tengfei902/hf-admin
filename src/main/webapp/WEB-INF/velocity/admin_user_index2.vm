@@ -1,5 +1,5 @@
 
-<div class='bread'><span class='bread-title'>您的当前位置 : </span>用户管理 >> 商户管理</div><!DOCTYPE html>
+<div class='bread'><span class='bread-title'>您的当前位置 : </span>用户管理 >> 用户管理</div><!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -35,20 +35,20 @@
                 </div>
                 <!--条件查询-->
                 <div class="ibox-content">
-                    <form class="layui-form" action="#springUrl('/user/get_user_group_list')" method="get" autocomplete="off">
+                    <form class="layui-form" action="#springUrl('/user/get_user_list')" method="get" autocomplete="off">
                         <input type="hidden" name="m" value="Admin">
                         <input type="hidden" name="c" value="User">
                         <input type="hidden" name="a" value="index">
                         <div class="layui-form-item">
                             <div class="layui-inline">
                                 <div class="layui-input-inline">
-                                    <input type="text" name="user" autocomplete="off" placeholder="商户号或用户名"
+                                    <input type="text" name="user" autocomplete="off" placeholder="用户名或用户号"
                                            class="layui-input" value="">
                                 </div>
                             </div>
                             <div class="layui-inline">
                                 <div class="layui-input-inline">
-                                    <input type="text" name="agent" autocomplete="off" placeholder="代理号或用户名"
+                                    <input type="text" name="group" autocomplete="off" placeholder="机构名或机构号"
                                            class="layui-input" value="">
                                 </div>
                             </div>
@@ -64,10 +64,8 @@
                                 <div class="layui-input-inline">
                                     <select name="type">
                                         <option value="">用户类型</option>
-                                        <option value="1">普通商户</option>
-                                        <option value="2">普通代理商</option>
-                                        <option value="3">分公司</option>
-                                        <option value="10">总部</option>
+                                        <option value="1">管理员</option>
+                                        <option value="3">普通用户</option>
                                     </select>
                                 </div>
                             </div>
@@ -83,13 +81,13 @@
                         <thead>
                         <tr>
                             <th lay-data="{field:'id',fixed: true,width:60}"></th>
-                            <th lay-data="{field:'memberid', width:80, sort: true, fixed: true}">商户号</th>
-                            <th lay-data="{field:'username', width:120}">商户名</th>
-                            <th lay-data="{field:'groupid', width:110}">商户类型</th>
-                            <th lay-data="{field:'parentid', width:120}">上级用户</th>
+                            <th lay-data="{field:'username', width:120}">用户名</th>
+                            <th lay-data="{field:'userType', width:110}">用户类型</th>
+                            <th lay-data="{field:'groupName', width:120}">所属机构</th>
                             <th lay-data="{field:'status', width:80}">状态</th>
-                            <th lay-data="{field:'authorized', width:100}">认证</th>
-                            <th lay-data="{field:'money', width:240,style:'background-color: #00a0e9; color: #fff;cursor: pointer;'}">账户总额</th>
+                            <th lay-data="{field:'inviteCode', width:120}">推广码</th>
+                            <th lay-data="{field:'inviteSite', width:120}">推广地址</th>
+                            <th lay-data="{field:'tel', width:120}">联系方式</th>
                             <th lay-data="{field:'regdatetime', width:120}">注册时间</th>
                             <th lay-data="{field:'op',width:380}">操作</th>
                         </tr>
@@ -99,38 +97,23 @@
                         #foreach($user in $users)
 
                         <tr>
-                            <td>${user.id}</td>
-                            <td>${user.groupNo}</td>
+                            <td>${user.userId}</td>
                             <td>${user.name}</td>
                             <td>${user.type}</td>
-                            <td>${user.subGroupName}</td>
-                            <td><a href="javascript:;" style="display:block;margin-top:3">
-                                <input type="checkbox"
-                                       data-uid="33"
-                                       checked
-                                       name="open"
-                                       lay-skin="switch"
-                                       lay-filter="switchStatus"
-                                       lay-text="正常|禁用">
-                            </a>
-                            </td>
+                            <td>${user.group}</td>
                             <td><span class="label label-default blud" style="margin-top:6px;">${user.statusDesc}</span></td>
-                            <td><div title="用户资金管理">可提现：#if (!${user.amount}) 0.00 #else ${user.amount} #end 冻结：#if(!${user.lockAmount}) 0.00 #else ${user.lockAmount} #end</div></td>
+                            <td>${user.inviteCode}</td>
+                            <td>${user.inviteSite}</td>
+                            <td>${user.tel}</td>
                             <td>$!date.format('yyyy-MM-dd HH:mm:ss ',$!user.createTime)</td>
                             <td>
                                 <div class="layui-btn-group">
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_withdrawal('提现设置',
-                                                '/Admin_User_userWithdrawal_uid_33.html')">提现</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('编辑通道','/Admin_User_editUserProduct_uid_33.html',800)"
-                                    >通道</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_rate('编辑费率','/Admin_User_userRateEdit_uid_33.html',640,480)">费率</button>
                                     <button class="layui-btn layui-btn-small lineblud"
                                             onclick="member_edit('编辑','/Admin_User_editPassword_uid_33.html',800,540)"
                                     >密码</button>
                                     <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('编辑','/Admin_User_editUser_uid_33.html',800,600)"
                                     >编辑</button>
                                     <button class="layui-btn layui-btn-small lineblud" onclick="member_del(this,'33')">删除</button>
-                                    <button class="layui-btn layui-btn-small lineblud" onclick="member_peizhi('指派通道','/Admin_User_peizhi_uid_33.html',800,600)">指定通道配置</button>
                                 </div>
                             </td>
                         </tr>

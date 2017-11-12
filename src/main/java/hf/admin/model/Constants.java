@@ -14,4 +14,7 @@ public class Constants {
     public static final String USER_VARIFIED_FAILED = "9000001";
 
     public static final String PAGE_DATE_IS_GET = "pageDataIsGet";
+
+    //1:普通商户;2:代理商;3:分公司;10:总部
+    public static final int GROUP_TYPE = 3;
 }

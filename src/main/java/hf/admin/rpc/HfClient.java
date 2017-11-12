@@ -2,9 +2,7 @@ package hf.admin.rpc;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import hf.admin.model.UserInfo;
-import hf.admin.model.UserInfoDto;
-import hf.admin.model.UserInfoRequest;
+import hf.admin.model.*;
 import hf.admin.utils.ResponseResult;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -17,6 +15,7 @@ import java.util.List;
 public class HfClient extends BaseClient {
 
     private static final String HF_APP_URL = "http://127.0.0.1:8080/jh/user/get_user_list";
+    private static final String GET_USER_GROUP_LIST = "http://127.0.0.1:8080/jh/user/get_user_group_list";
     private static final String GET_USER_INFO = "http://127.0.0.1:8080/jh/user/get_user_info";
     private static final String EDIT_PASSWORD = "http://127.0.0.1:8080/jh/user/edit_password";
 
@@ -24,6 +23,13 @@ public class HfClient extends BaseClient {
         RemoteParams params = new RemoteParams().withPath(HF_APP_URL).withObject(request);
         String result = super.post(params);
         ResponseResult<List<UserInfoDto>> response = new Gson().fromJson(result,new TypeToken<ResponseResult<List<UserInfoDto>>>(){}.getType());
+        return response.getData();
+    }
+
+    public List<UserGroupDto> getUserGroupList(UserGroupRequest request) {
+        RemoteParams params = new RemoteParams().withPath(GET_USER_GROUP_LIST).withObject(request);
+        String result = super.post(params);
+        ResponseResult<List<UserGroupDto>> response = new Gson().fromJson(result,new TypeToken<ResponseResult<List<UserGroupDto>>>(){}.getType());
         return response.getData();
     }
 

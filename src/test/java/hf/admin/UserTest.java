@@ -16,35 +16,5 @@ public class UserTest extends BaseTest {
 
     @Test
     public void testGetUserList() {
-        UserInfoRequest request = new UserInfoRequest();
-        request.setAdminId("12457");
-        List<UserInfoDto> list = userService.getUserListForAdmin(request);
-        Assert.assertTrue(list.size() == 120);
-        for(UserInfoDto userInfo:list) {
-            Assert.assertEquals(userInfo.getAdminId().intValue(),12457);
-        }
-
-        request.setStatus(1);
-
-        list = userService.getUserListForAdmin(request);
-
-        Assert.assertEquals(list.size(),0);
-
-        request.setStatus(0);
-        request.setUser("张三_2_0_1");
-
-        list = userService.getUserListForAdmin(request);
-
-        for(UserInfoDto userInfo:list) {
-            System.out.println(userInfo.getName());
-            System.out.println(userInfo.getUserNo());
-            Assert.assertTrue(userInfo.getName().contains("张三_2_0_1") || userInfo.getUserNo().contains("张三_2_0_1"));
-        }
-
-        request = new UserInfoRequest();
-        request.setAdminId("1");
-
-        list = userService.getUserListForAdmin(request);
-        Assert.assertEquals(list.size(),12101);
     }
 }

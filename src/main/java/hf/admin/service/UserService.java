@@ -1,6 +1,7 @@
 package hf.admin.service;
 
 import hf.admin.enums.UserType;
+import hf.admin.model.Constants;
 import hf.admin.model.UserInfo;
 import hf.admin.model.UserInfoDto;
 import hf.admin.model.UserInfoRequest;
@@ -22,8 +23,8 @@ public class UserService {
         return hfClient.getUserListForAdmin(request);
     }
 
-    public UserInfo getUserInfo(String loginId, String password,UserType userType) {
-        UserInfo userInfo = hfClient.getUserInfo(loginId,password,userType.getValue());
+    public UserInfo getUserInfo(String loginId, String password) {
+        UserInfo userInfo = hfClient.getUserInfo(loginId,password, Constants.GROUP_TYPE);
         return userInfo;
     }
 

@@ -1,10 +1,7 @@
 package hf.admin.api;
 
 import hf.admin.enums.UserType;
-import hf.admin.model.Constants;
-import hf.admin.model.UserInfo;
-import hf.admin.model.UserInfoDto;
-import hf.admin.model.UserInfoRequest;
+import hf.admin.model.*;
 import hf.admin.rpc.HfClient;
 import hf.admin.service.UserService;
 import hf.admin.service.common.CacheService;
@@ -41,7 +38,7 @@ public class UserApi extends BaseController {
      */
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public ModelAndView doLogin(HttpServletRequest request, String loginId,String password) {
-        UserInfo userInfo = userService.getUserInfo(loginId,password,UserType.ADMIN);
+        UserInfo userInfo = userService.getUserInfo(loginId,password);
 
         ModelAndView modelAndView = new ModelAndView();
 
@@ -51,8 +48,9 @@ public class UserApi extends BaseController {
         }
 
         if(userInfo.getType() == UserType.ADMIN.getValue() || userInfo.getType() == UserType.SUPER_ADMIN.getValue()) {
-            request.getSession().setAttribute(USER_LOGIN_INFO, MapUtils.buildMap("id",userInfo.getId(),"name",userInfo.getName(),"loginId",userInfo.getLoginId(),"userType",UserType.parse(userInfo.getType()).getDesc()));
+            request.getSession().setAttribute(USER_LOGIN_INFO, MapUtils.buildMap("id",userInfo.getId(),"name",userInfo.getName(),"loginId",userInfo.getLoginId(),"userType",UserType.parse(userInfo.getType()).getDesc(),"groupId",userInfo.getGroupId()));
             request.getSession().setAttribute("userId",userInfo.getId());
+            request.getSession().setAttribute("groupId",userInfo.getGroupId());
             cacheService.login(userInfo.getId().toString(),request.getSession().getId());
 
             modelAndView.setViewName("redirect:/common/index");
@@ -61,6 +59,7 @@ public class UserApi extends BaseController {
             return modelAndView;
         }
 
+        modelAndView.setViewName("redirect:/login.jsp");
         return modelAndView;
     }
 
@@ -89,6 +88,30 @@ public class UserApi extends BaseController {
         userInfoRequest.setAdminId(userId);
 
         List<UserInfoDto> list = hfClient.getUserListForAdmin(userInfoRequest);
+
+        ModelAndView modelAndView = new ModelAndView("admin_user_index");
+        modelAndView.addObject("users",list);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/get_user_group_list",method = RequestMethod.GET)
+    public ModelAndView getUserGroupList(HttpServletRequest request) {
+        String groupId = String.valueOf(request.getSession().getAttribute("groupId"));
+        UserGroupRequest userGroupRequest = new UserGroupRequest();
+        userGroupRequest.setUser(request.getParameter("user"));
+        userGroupRequest.setAgent(request.getParameter("agent"));
+
+        if(!StringUtils.isEmpty(request.getParameter("status"))) {
+            userGroupRequest.setStatus(Integer.parseInt(request.getParameter("status")));
+        }
+
+        if(!StringUtils.isEmpty(request.getParameter("type"))) {
+            userGroupRequest.setType(Integer.parseInt(request.getParameter("type")));
+        }
+
+        userGroupRequest.setCompanyId(groupId);
+
+        List<UserGroupDto> list = hfClient.getUserGroupList(userGroupRequest);
 
         ModelAndView modelAndView = new ModelAndView("admin_user_index");
         modelAndView.addObject("users",list);
