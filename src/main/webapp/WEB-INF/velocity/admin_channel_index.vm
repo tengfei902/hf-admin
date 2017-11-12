@@ -44,24 +44,23 @@
                                         <th>接口代码</th>
 										<th>接口类型</th>
                                         <th>接口状态</th>
-										<th>费率下限</th>
-										<th>费率上限</th>
+										<th>费率</th>
                                         <th>操作</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+								#foreach($channel in $channels)
 								<tr>
-                                        <td>207</td>
-                                        <td>牛支付</td>
-                                        <td>NiuZhiFu</td>
-										<td>牛支付</td>
+                                        <td>${channel.id}</td>
+                                        <td>${channel.channelName}</td>
+                                        <td>${channel.channelCode}</td>
+										<td>${channel.channelTypeDesc}</td>
                                         <td>
 											<div class="layui-form">
-											<input type="checkbox" checked="" name="status" value="1" data-id="207" data-name="牛支付" lay-skin="switch" lay-filter="switchTest" lay-text="开启|关闭"><div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em>开启</em><i></i></div>
+											<input type="checkbox" checked="" name="status" value="1" data-id="207" data-name="牛支付" lay-skin="switch" lay-filter="switchTest" lay-text="开启|关闭"><div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em>${channel.statusDesc}</em><i></i></div>
 											</div>
 										</td>
-										<td><span id="dfRate207">0.000</span></td>
-										<td><span id="fdRate207">0.000</span></td>
+										<td><span id="dfRate207">${channel.feeRate}</span></td>
                                         <td>
 											<div class="layui-btn-group">
 											  <button class="layui-btn layui-btn-small" onclick="admin_editRate('编辑费率','/Admin_Channel_editRate_pid_207.html')">费率</button>
@@ -69,102 +68,8 @@
 											  <button class="layui-btn layui-btn-small" onclick="admin_del(this,'207')">删除</button>
 											</div>
                                         </td>
-                                    </tr><tr>
-                                        <td>203</td>
-                                        <td>QQ扫码</td>
-                                        <td>QQSCAN</td>
-										<td>QQ钱包扫码</td>
-                                        <td>
-											<div class="layui-form">
-											<input type="checkbox" checked="" name="status" value="1" data-id="203" data-name="QQ扫码" lay-skin="switch" lay-filter="switchTest" lay-text="开启|关闭"><div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em>开启</em><i></i></div>
-											</div>
-										</td>
-										<td><span id="dfRate203">0.000</span></td>
-										<td><span id="fdRate203">0.000</span></td>
-                                        <td>
-											<div class="layui-btn-group">
-											  <button class="layui-btn layui-btn-small" onclick="admin_editRate('编辑费率','/Admin_Channel_editRate_pid_203.html')">费率</button>
-											  <button class="layui-btn layui-btn-small" onclick="admin_edit('编辑供应商接口','/Admin_Channel_editSupplier_pid_203.html')">编辑</button>
-											  <button class="layui-btn layui-btn-small" onclick="admin_del(this,'203')">删除</button>
-											</div>
-                                        </td>
-                                    </tr><tr>
-                                        <td>202</td>
-                                        <td>支付宝H5</td>
-                                        <td>Aliwap</td>
-										<td>牛支付</td>
-                                        <td>
-											<div class="layui-form">
-											<input type="checkbox" checked="" name="status" value="1" data-id="202" data-name="支付宝H5" lay-skin="switch" lay-filter="switchTest" lay-text="开启|关闭"><div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em>开启</em><i></i></div>
-											</div>
-										</td>
-										<td><span id="dfRate202">0.000</span></td>
-										<td><span id="fdRate202">0.000</span></td>
-                                        <td>
-											<div class="layui-btn-group">
-											  <button class="layui-btn layui-btn-small" onclick="admin_editRate('编辑费率','/Admin_Channel_editRate_pid_202.html')">费率</button>
-											  <button class="layui-btn layui-btn-small" onclick="admin_edit('编辑供应商接口','/Admin_Channel_editSupplier_pid_202.html')">编辑</button>
-											  <button class="layui-btn layui-btn-small" onclick="admin_del(this,'202')">删除</button>
-											</div>
-                                        </td>
-                                    </tr><tr>
-                                        <td>201</td>
-                                        <td>支付宝扫码</td>
-                                        <td>Aliscan</td>
-										<td>支付宝扫码</td>
-                                        <td>
-											<div class="layui-form">
-											<input type="checkbox" checked="" name="status" value="1" data-id="201" data-name="支付宝扫码" lay-skin="switch" lay-filter="switchTest" lay-text="开启|关闭"><div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em>开启</em><i></i></div>
-											</div>
-										</td>
-										<td><span id="dfRate201">0.000</span></td>
-										<td><span id="fdRate201">0.000</span></td>
-                                        <td>
-											<div class="layui-btn-group">
-											  <button class="layui-btn layui-btn-small" onclick="admin_editRate('编辑费率','/Admin_Channel_editRate_pid_201.html')">费率</button>
-											  <button class="layui-btn layui-btn-small" onclick="admin_edit('编辑供应商接口','/Admin_Channel_editSupplier_pid_201.html')">编辑</button>
-											  <button class="layui-btn layui-btn-small" onclick="admin_del(this,'201')">删除</button>
-											</div>
-                                        </td>
-                                    </tr><tr>
-                                        <td>200</td>
-                                        <td>微信H5</td>
-                                        <td>WxGzh</td>
-										<td>微信H5</td>
-                                        <td>
-											<div class="layui-form">
-											<input type="checkbox" checked="" name="status" value="1" data-id="200" data-name="微信H5" lay-skin="switch" lay-filter="switchTest" lay-text="开启|关闭"><div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em>开启</em><i></i></div>
-											</div>
-										</td>
-										<td><span id="dfRate200">0.000</span></td>
-										<td><span id="fdRate200">0.000</span></td>
-                                        <td>
-											<div class="layui-btn-group">
-											  <button class="layui-btn layui-btn-small" onclick="admin_editRate('编辑费率','/Admin_Channel_editRate_pid_200.html')">费率</button>
-											  <button class="layui-btn layui-btn-small" onclick="admin_edit('编辑供应商接口','/Admin_Channel_editSupplier_pid_200.html')">编辑</button>
-											  <button class="layui-btn layui-btn-small" onclick="admin_del(this,'200')">删除</button>
-											</div>
-                                        </td>
-                                    </tr><tr>
-                                        <td>199</td>
-                                        <td>微信扫码支付</td>
-                                        <td>WxSm</td>
-										<td>微信扫码</td>
-                                        <td>
-											<div class="layui-form">
-											<input type="checkbox" checked="" name="status" value="1" data-id="199" data-name="微信扫码支付" lay-skin="switch" lay-filter="switchTest" lay-text="开启|关闭"><div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em>开启</em><i></i></div>
-											</div>
-										</td>
-										<td><span id="dfRate199">0.040</span></td>
-										<td><span id="fdRate199">0.090</span></td>
-                                        <td>
-											<div class="layui-btn-group">
-											  <button class="layui-btn layui-btn-small" onclick="admin_editRate('编辑费率','/Admin_Channel_editRate_pid_199.html')">费率</button>
-											  <button class="layui-btn layui-btn-small" onclick="admin_edit('编辑供应商接口','/Admin_Channel_editSupplier_pid_199.html')">编辑</button>
-											  <button class="layui-btn layui-btn-small" onclick="admin_del(this,'199')">删除</button>
-											</div>
-                                        </td>
-                                    </tr>    
+                                    </tr>
+								#end
                                 </tbody>
                             </table>
                         </div>

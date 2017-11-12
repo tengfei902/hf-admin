@@ -18,6 +18,7 @@ public class HfClient extends BaseClient {
     private static final String GET_USER_GROUP_LIST = "http://127.0.0.1:8080/jh/user/get_user_group_list";
     private static final String GET_USER_INFO = "http://127.0.0.1:8080/jh/user/get_user_info";
     private static final String EDIT_PASSWORD = "http://127.0.0.1:8080/jh/user/edit_password";
+    private static final String GET_CHANNEL_LIST = "http://127.0.0.1:8080/jh/user/get_channel_list";
 
     public List<UserInfoDto> getUserListForAdmin(UserInfoRequest request) {
         RemoteParams params = new RemoteParams().withPath(HF_APP_URL).withObject(request);
@@ -55,6 +56,13 @@ public class HfClient extends BaseClient {
 
         String result = super.post(params);
         ResponseResult<Boolean> response = new Gson().fromJson(result,new TypeToken<ResponseResult<Boolean>>(){}.getType());
+        return response.getData();
+    }
+
+    public List<Channel> getChannelList() {
+        RemoteParams params = new RemoteParams().withPath(GET_CHANNEL_LIST);
+        String result = super.get(params,String.class);
+        ResponseResult<List<Channel>> response = new Gson().fromJson(result,new TypeToken<ResponseResult<List<Channel>>>(){}.getType());
         return response.getData();
     }
 }

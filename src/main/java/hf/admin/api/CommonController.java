@@ -47,6 +47,18 @@ public class CommonController {
             modelAndView.addObject("users",list);
         }
 
+        if(StringUtils.equals(page,"admin_channel_index")) {
+            List<Channel> list = hfClient.getChannelList();
+
+            list.stream().forEach(channel -> {
+                    channel.setChannelTypeDesc(Channel.ChannelType.parse(channel.getChannelType()).getDesc());
+                    channel.setStatusDesc(Channel.ChannelStatus.parse(channel.getStatus()).getDesc());
+                }
+            );
+
+            modelAndView.addObject("channels",list);
+        }
+
         return modelAndView;
     }
 }
