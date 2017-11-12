@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>威付宝支付系统 后台管理系统 - 您需要登录后才可以使用本功能</title>
+    <title>慧富宝支付系统 后台管理系统 - 您需要登录后才可以使用本功能</title>
     <link href="Public/Front/css/layui.css" rel="stylesheet" type="text/css">
     <link href="Public/Admin/css/login.css" rel="stylesheet" type="text/css">
     <style>
@@ -43,7 +43,7 @@
 <body>
 <div class="login login-layout" id="login">
     <div>
-        <h3 style="color:#FFF;font-size:20px">威付宝支付系统管理后台欢迎您</h3>
+        <h3 style="color:#FFF;font-size:20px">慧富宝支付系统管理后台欢迎您</h3>
         <form class="layui-form" method="post" action="/admin/user/login" autocomplete="off" id="loginform">
             <div class="layui-input-block user-name">
                 <img src="Public/Admin/images/user.png" class="before">

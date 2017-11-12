@@ -14,7 +14,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="renderer" content="webkit">
-    <title>威付宝支付系统---管理</title>
+    <title>慧富宝支付系统---管理</title>
     <link rel="shortcut icon" href="#springUrl('/favicon.ico')">
     <link href="#springUrl('/Public/Front/css/bootstrap.min.css')" rel="stylesheet">
     <link href="#springUrl('/Public/Front/css/font-awesome.min.css')" rel="stylesheet">
