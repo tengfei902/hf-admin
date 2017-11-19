@@ -23,7 +23,7 @@
             <mvc:mapping path="/common/*"/>
             <mvc:mapping path="/user/*"/>
             <mvc:exclude-mapping path="/user/login"/>
-            <beans:bean class="hf.admin.service.interceptor.UserIntercepter"/>
+            <beans:bean class="hf.admin.interceptors.UserInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
 </beans:beans>

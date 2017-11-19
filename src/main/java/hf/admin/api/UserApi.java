@@ -2,10 +2,12 @@ package hf.admin.api;
 
 import hf.admin.enums.UserType;
 import hf.admin.model.*;
-import hf.admin.rpc.HfClient;
-import hf.admin.service.UserService;
-import hf.admin.service.common.CacheService;
+import hf.admin.rpc.AdminClient;
 import hf.admin.utils.MapUtils;
+import hf.base.biz.CacheService;
+import hf.base.client.DefaultClient;
+import hf.base.model.UserInfo;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,13 +25,13 @@ import static hf.admin.model.Constants.USER_LOGIN_INFO;
 
 @Controller
 @RequestMapping("/user")
-public class UserApi extends BaseController {
+public class UserApi {
     @Autowired
     private CacheService cacheService;
     @Autowired
-    private UserService userService;
+    private AdminClient adminClient;
     @Autowired
-    private HfClient hfClient;
+    private DefaultClient client;
     /**
      * 登陆
      * @param loginId
@@ -38,8 +40,7 @@ public class UserApi extends BaseController {
      */
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public ModelAndView doLogin(HttpServletRequest request, String loginId,String password) {
-        UserInfo userInfo = userService.getUserInfo(loginId,password);
-
+        UserInfo userInfo = client.getUserInfo(loginId,password, hf.base.contants.Constants.GROUP_TYPE_COMPANY);
         ModelAndView modelAndView = new ModelAndView();
 
         if(Objects.isNull(userInfo) || Objects.isNull(userInfo.getId())) {
@@ -47,25 +48,20 @@ public class UserApi extends BaseController {
             return modelAndView;
         }
 
-        if(userInfo.getType() == UserType.ADMIN.getValue() || userInfo.getType() == UserType.SUPER_ADMIN.getValue()) {
-            request.getSession().setAttribute(USER_LOGIN_INFO, MapUtils.buildMap("id",userInfo.getId(),"name",userInfo.getName(),"loginId",userInfo.getLoginId(),"userType",UserType.parse(userInfo.getType()).getDesc(),"groupId",userInfo.getGroupId()));
-            request.getSession().setAttribute("userId",userInfo.getId());
-            request.getSession().setAttribute("groupId",userInfo.getGroupId());
-            cacheService.login(userInfo.getId().toString(),request.getSession().getId());
+        request.getSession().setAttribute(USER_LOGIN_INFO, MapUtils.buildMap("id",userInfo.getId(),"name",userInfo.getName(),"loginId",userInfo.getLoginId(),"userType",UserType.parse(userInfo.getType()).getDesc(),"groupId",userInfo.getGroupId()));
+        request.getSession().setAttribute("userId",userInfo.getId());
+        request.getSession().setAttribute("groupId",userInfo.getGroupId());
+        cacheService.login(userInfo.getId().toString(),request.getSession().getId());
 
-            modelAndView.setViewName("redirect:/common/index");
-            modelAndView.addObject("userInfo",userInfo);
-            modelAndView.addObject("userId",userInfo.getId());
-            return modelAndView;
-        }
-
-        modelAndView.setViewName("redirect:/login.jsp");
+        modelAndView.setViewName("redirect:/common/index");
         return modelAndView;
     }
 
     @RequestMapping(value = "/logout",method = RequestMethod.GET)
     public ModelAndView logout(HttpServletRequest request) {
         request.getSession().removeAttribute(Constants.USER_LOGIN_INFO);
+        request.getSession().removeAttribute("userId");
+        request.getSession().removeAttribute("groupId");
         ModelAndView modelAndView = new ModelAndView("redirect:/login.jsp");
         return modelAndView;
     }
@@ -87,7 +83,7 @@ public class UserApi extends BaseController {
 
         userInfoRequest.setAdminId(userId);
 
-        List<UserInfoDto> list = hfClient.getUserListForAdmin(userInfoRequest);
+        List<UserInfoDto> list = adminClient.getUserListForAdmin(userInfoRequest);
 
         ModelAndView modelAndView = new ModelAndView("admin_user_index");
         modelAndView.addObject("users",list);
@@ -111,7 +107,7 @@ public class UserApi extends BaseController {
 
         userGroupRequest.setCompanyId(groupId);
 
-        List<UserGroupDto> list = hfClient.getUserGroupList(userGroupRequest);
+        List<UserGroupDto> list = adminClient.getUserGroupList(userGroupRequest);
 
         ModelAndView modelAndView = new ModelAndView("admin_user_index");
         modelAndView.addObject("users",list);
@@ -125,7 +121,63 @@ public class UserApi extends BaseController {
         String newpassword = request.getParameter("newpassword");
         String newpasswordok = request.getParameter("newpasswordok");
 
-        boolean result = hfClient.editPassword(userId,ypassword,newpassword,newpasswordok);
+        boolean result = adminClient.editPassword(userId,ypassword,newpassword,newpasswordok);
         return MapUtils.buildMap("status",result);
+    }
+
+    @RequestMapping(value = "/get_channel_info",method = RequestMethod.GET)
+    public Map<String,Object> getChannelInfo(Long channelId,Long groupId) {
+        return null;
+    }
+
+    @RequestMapping(value = "/save_channel",method = RequestMethod.POST)
+    public ModelAndView saveChannel(HttpServletRequest request) {
+        String channelName = request.getParameter("channelName");
+        String channelCode = request.getParameter("channelCode");
+        String feeRate = request.getParameter("feeRate");
+        String url = request.getParameter("url");
+        String status = request.getParameter("status");
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("redirect:/common/admin_channel_index");
+
+        if(!NumberUtils.isNumber(feeRate)) {
+            return modelAndView;
+        }
+
+        adminClient.saveChannel(MapUtils.buildMap("channelName",channelName,"channelCode",channelCode,"feeRate",feeRate,"url",url,"status",status));
+
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/save_user_channel",method = RequestMethod.POST)
+    public @ResponseBody Map<String,Boolean> saveUserChannel(HttpServletRequest request) {
+        String groupId = request.getParameter("group");
+        String channelId = request.getParameter("channelId");
+        String feeRate = request.getParameter("feeRate");
+        String mchId = request.getParameter("mchId");
+        String cipherCode = request.getParameter("cipherCode");
+        String callbackUrl = request.getParameter("callbackUrl");
+
+        boolean result = adminClient.saveUserChannel(MapUtils.buildMap("groupId",groupId,"channelId",channelId,"feeRate",feeRate,"mchId",mchId,"cipherCode",cipherCode,"callbackUrl",callbackUrl));
+        return MapUtils.buildMap("status",result);
+    }
+
+    @RequestMapping(value = "/save_admin_bank_card",method = RequestMethod.POST)
+    public @ResponseBody Map<String,Boolean> saveAdminBankCard(HttpServletRequest request) {
+        String id = request.getParameter("id");
+        String bank = request.getParameter("bank");
+        String deposit = request.getParameter("deposit");
+        String owner = request.getParameter("owner");
+        String bankNo = request.getParameter("bankNo");
+        String province = request.getParameter("province");
+        String city = request.getParameter("city");
+        String companyId = request.getSession().getAttribute("groupId").toString();
+        String groupId = request.getParameter("group");
+
+        boolean status = adminClient.saveAdminBankCard(MapUtils.buildMap("id",id,"bank",bank,"deposit",deposit,"owner",owner,
+                "bankNo",bankNo,"province",province,"city",city,"companyId",companyId,"groupId",groupId));
+
+        return MapUtils.buildMap("status",status);
     }
 }

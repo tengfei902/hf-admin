@@ -40,11 +40,11 @@
                                     <tr>
 
                                         <th>编号</th>
-                                        <th>接口名称</th>
+                                        <th>供应商</th>
                                         <th>接口代码</th>
-										<th>接口类型</th>
                                         <th>接口状态</th>
 										<th>费率</th>
+                                        <th>地址</th>
                                         <th>操作</th>
                                     </tr>
                                 </thead>
@@ -54,12 +54,11 @@
                                         <td>${channel.id}</td>
                                         <td>${channel.channelName}</td>
                                         <td>${channel.channelCode}</td>
-										<td>${channel.channelTypeDesc}</td>
-                                        <td>
-											<div class="layui-form">
-											<input type="checkbox" checked="" name="status" value="1" data-id="207" data-name="牛支付" lay-skin="switch" lay-filter="switchTest" lay-text="开启|关闭"><div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em>${channel.statusDesc}</em><i></i></div>
-											</div>
-										</td>
+                                    	<td>
+                                        <div class="layui-form">
+                                            <input type="checkbox" name="status" value="${channel.status}" data-id="${channel.id}" #if(${channel.status}==0) checked #end data-name="联动优势" lay-skin="switch" lay-filter="switchTest" lay-text="开启|关闭">
+                                        </div>
+                                    	</td>
 										<td><span id="dfRate207">${channel.feeRate}</span></td>
                                         <td>
 											<div class="layui-btn-group">
@@ -94,10 +93,10 @@ layui.use(['layer', 'form'], function(){
   
   //监听指定开关
   form.on('switch(switchTest)', function(data){
-	var pid = $(this).attr('data-id'),
-	isopen = this.checked ? 1 : 0,
-	title = $(this).attr('data-name');
-	$.ajax({
+	var pid = jQuery(this).attr('data-id'),
+	isopen = this.checked ? 0 : 99,
+	title = jQuery(this).attr('data-name');
+      jQuery.ajax({
 		url:"/Admin_Channel_editStatus.html",
 		type:'post',
 		data:"pid="+pid+"&isopen="+isopen,
@@ -112,10 +111,10 @@ layui.use(['layer', 'form'], function(){
   });
   
   //监听提交
-  $('#addSupplier').on('click',function(){
+  jQuery('#addSupplier').on('click',function(){
 	var w=640,h;
 	if (h == null || h == '') {
-		h=($(window).height() - 50);
+		h=(jQuery(window).height() - 50);
 	};
 	layer.open({
 		type: 2,
@@ -125,7 +124,7 @@ layui.use(['layer', 'form'], function(){
 		area: [w+'px', h +'px'],
 		shade:0.4,
 		title: "添加供应商",
-		content: "/Admin_Channel_addSupplier.html"
+		content: "#springUrl('/common/admin_add_channel')"
 	});
   });
 });
@@ -133,7 +132,7 @@ layui.use(['layer', 'form'], function(){
  function admin_edit(title,url){
 	var w=600,h;
 	if (h == null || h == '') {
-		h=($(window).height() - 50);
+		h=(jQuery(window).height() - 50);
 	};
 	layer.open({
 		type: 2,
@@ -149,13 +148,13 @@ layui.use(['layer', 'form'], function(){
  /*删除*/
 function admin_del(obj,id){
 	layer.confirm('确认要删除吗？',function(index){
-		$.ajax({
+        jQuery.ajax({
 			url:"/Admin_Channel_delSupplier.html",
 			type:'post',
 			data:'pid='+id,
 			success:function(res){
 				if(res.status){
-				$(obj).parents("tr").remove();
+                    jQuery(obj).parents("tr").remove();
 				layer.msg('已删除!',{icon:1,time:1000});
 				}
 			}
@@ -166,7 +165,7 @@ function admin_del(obj,id){
 function admin_editRate(title,url){
 	var w=510,h=320;
 	if (h == null || h == '') {
-		h=($(window).height() - 50);
+		h=(jQuery(window).height() - 50);
 	};
 	layer.open({
 		type: 2,
