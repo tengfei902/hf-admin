@@ -110,8 +110,8 @@
                                         <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('用户列表','#springUrl("/common/group_user_list?groupId=${group.id}")',800)">用户列表</button>
                                         <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('编辑通道','#springUrl("/common/user_channel_list?id=${group.id}")',800)">通道</button>
                                         <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('设置结算账号','#springUrl("/common/admin_bank_profile?id=${group.id}")',800)">设置结算账号</button>
-                                        <button class="layui-btn layui-btn-small lineblud" onclick="member_del(this,'33')">退回</button>
-                                        <button class="layui-btn layui-btn-small lineblud" onclick="member_del(this,'33')">验证通过</button>
+                                        <button class="layui-btn layui-btn-small lineblud" onclick="member_back(this,'${group.id}')">退回</button>
+                                        <button class="layui-btn layui-btn-small lineblud" onclick="member_pass(this,'${group.id}')">验证通过</button>
                                     </div>
                                 </td>
                             </tr>
@@ -255,6 +255,41 @@
             });
         });
     }
+
+    function member_back(obj, id) {
+        layer.confirm('确认要退回吗？', function (index) {
+            jQuery.ajax({
+                url:"#springUrl('/user/user_member_back')",
+                type:'post',
+                data:'uid='+id,
+                success:function(res){
+                    if(res.status){
+                        jQuery(obj).parents("tr").remove();
+                        layer.msg('已退回!',{icon:1,time:1000});
+                    }
+                }
+            });
+        });
+    }
+
+    function member_pass(obj, id) {
+        layer.confirm('确认要退回吗？', function (index) {
+            jQuery.ajax({
+                url:"#springUrl('/user/user_member_pass')",
+                type:'post',
+                data:'uid='+id,
+                success:function(res){
+                    if(res.status){
+                        jQuery(obj).parents("tr").remove();
+                        layer.msg('已退回!',{icon:1,time:1000});
+                    } else {
+                        layer.msg(res.msg,{icon:-1,time:1000});
+                    }
+                }
+            });
+        });
+    }
+
     /*用户-配置*/
     function member_peizhi(title, url, id, w, h){
         x_admin_show(title, url, w, h);

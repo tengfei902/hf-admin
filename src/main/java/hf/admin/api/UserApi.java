@@ -7,6 +7,7 @@ import hf.admin.utils.MapUtils;
 import hf.base.biz.CacheService;
 import hf.base.client.DefaultClient;
 import hf.base.model.UserInfo;
+import hf.base.utils.ResponseResult;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -179,5 +180,26 @@ public class UserApi {
                 "bankNo",bankNo,"province",province,"city",city,"companyId",companyId,"groupId",groupId));
 
         return MapUtils.buildMap("status",status);
+    }
+
+    @RequestMapping(value = "/user_member_back",method = RequestMethod.POST)
+    public @ResponseBody Map<String,Boolean> memberBack(HttpServletRequest request) {
+        String id = request.getParameter("uid");
+        String groupId = request.getSession().getAttribute("groupId").toString();
+        String userId = request.getSession().getAttribute("userId").toString();
+
+        boolean result = adminClient.userTurnBack(MapUtils.buildMap("id",id,"groupId",groupId,"userId",userId));
+        return MapUtils.buildMap("status",result);
+    }
+
+    @RequestMapping(value = "/user_member_pass",method = RequestMethod.POST)
+    public @ResponseBody Map<String,Boolean> memberPass(HttpServletRequest request) {
+        String id = request.getParameter("uid");
+        ResponseResult<Boolean> response = adminClient.memberPass(id);
+        if(response.isSuccess()) {
+            return MapUtils.buildMap("status",true);
+        } else {
+            return MapUtils.buildMap("status",false,"msg",response.getMsg());
+        }
     }
 }

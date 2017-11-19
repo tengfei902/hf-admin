@@ -30,6 +30,8 @@ public class AdminClient extends BaseClient {
     private static final String SAVE_USER_CHANNEL = "/user/save_user_channel";
     private static final String GET_ADMIN_BANK_CARD = "/user/get_admin_bank_card";
     private static final String SAVE_ADMIN_BANK_CARD = "/user/save_admin_bank_card";
+    private static final String USER_TURN_BACK = "/user/user_turn_back";
+    private static final String USER_PASS = "/user/user_pass";
 
 
     public AdminClient(String url) {
@@ -145,6 +147,19 @@ public class AdminClient extends BaseClient {
         return parseResult(result);
     }
 
+    public Boolean userTurnBack(Map<String,Object> data) {
+        RemoteParams params = new RemoteParams(url).withPath(USER_TURN_BACK).withParams(data);
+        String result = super.post(params);
+        return parseResult(result);
+    }
+
+    public ResponseResult<Boolean> memberPass(String id) {
+        RemoteParams params = new RemoteParams(url).withPath(USER_PASS).withParam("id",id);
+        String result = super.post(params);
+        ResponseResult<Boolean> response = new Gson().fromJson(result,new TypeToken<ResponseResult<Boolean>>(){}.getType());
+        return response;
+    }
+
     private Boolean parseResult(String result) {
         ResponseResult<Boolean> response = new Gson().fromJson(result,new TypeToken<ResponseResult<Boolean>>(){}.getType());
         if(response.isSuccess()) {
@@ -152,4 +167,6 @@ public class AdminClient extends BaseClient {
         }
         throw new BizFailException(response.getCode(),response.getMsg());
     }
+
+
 }
