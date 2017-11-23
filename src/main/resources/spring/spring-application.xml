@@ -51,19 +51,26 @@
 		<constructor-arg value="${hf}"></constructor-arg>
 	</bean>
 
+	<bean class="hf.admin.rpc.UserClient">
+		<constructor-arg value="${hf}"></constructor-arg>
+	</bean>
+
 	<bean id="defaultDispatcher" class="hf.base.dispatcher.DefaultDispatcher"></bean>
 
 	<bean id="dispatcherFactory" class="hf.base.dispatcher.DefaultDispatcherFactory">
 		<constructor-arg>
 			<map>
 				<entry key="index" value-ref="indexDispatcher"/>
-				<entry key="admin_user_authorized" value-ref="authorizedDispatcher"/>
+				<entry key="admin_user_authorized" value-ref="groupIndexDispatcher"/>
 				<entry key="user_bankcard" value-ref="userBankCardDispatcher"/>
 				<entry key="group_user_list" value-ref="groupUserListDispatcher"/>
 				<entry key="user_channel_list" value-ref="userChannelListDispatcher"/>
 				<entry key="user_add_channel" value-ref="userAddChannelDispatcher"/>
 				<entry key="admin_channel_index" value-ref="adminChannelDispatcher"/>
 				<entry key="admin_bank_profile" value-ref="adminBankProfileDispatcher"/>
+				<entry key="admin_group_index" value-ref="groupIndexDispatcher"/>
+				<entry key="user_add_bankcard" value-ref="userAddBankCardDispatcher"/>
+				<entry key="user_add_member" value-ref="userAddMemberDispatcher"/>
 			</map>
 		</constructor-arg>
 	</bean>

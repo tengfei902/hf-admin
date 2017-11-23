@@ -6,6 +6,7 @@ import hf.admin.model.*;
 import hf.base.client.BaseClient;
 import hf.base.exceptions.BizFailException;
 import hf.base.model.*;
+import hf.base.utils.Pagenation;
 import hf.base.utils.ResponseResult;
 
 import java.util.List;
@@ -32,6 +33,7 @@ public class AdminClient extends BaseClient {
     private static final String SAVE_ADMIN_BANK_CARD = "/user/save_admin_bank_card";
     private static final String USER_TURN_BACK = "/user/user_turn_back";
     private static final String USER_PASS = "/user/user_pass";
+    private static final String SAVE_USER_INFO = "/user/save_user_info";
 
 
     public AdminClient(String url) {
@@ -45,10 +47,10 @@ public class AdminClient extends BaseClient {
         return response.getData();
     }
 
-    public List<UserGroupDto> getUserGroupList(UserGroupRequest request) {
+    public Pagenation<UserGroup> getUserGroupList(UserGroupRequest request) {
         RemoteParams params = new RemoteParams(url).withPath(GET_USER_GROUP_LIST).withObject(request);
         String result = super.post(params);
-        ResponseResult<List<UserGroupDto>> response = new Gson().fromJson(result,new TypeToken<ResponseResult<List<UserGroupDto>>>(){}.getType());
+        ResponseResult<Pagenation<UserGroup>> response = new Gson().fromJson(result,new TypeToken<ResponseResult<Pagenation<UserGroup>>>(){}.getType());
         return response.getData();
     }
 
@@ -158,6 +160,12 @@ public class AdminClient extends BaseClient {
         String result = super.post(params);
         ResponseResult<Boolean> response = new Gson().fromJson(result,new TypeToken<ResponseResult<Boolean>>(){}.getType());
         return response;
+    }
+
+    public Boolean saveUserInfo(Map<String,Object> params) {
+        RemoteParams remoteParams = new RemoteParams(url).withPath(SAVE_USER_INFO);
+        String result = super.post(remoteParams);
+        return parseResult(result);
     }
 
     private Boolean parseResult(String result) {

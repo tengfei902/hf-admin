@@ -75,6 +75,7 @@
                         #end
                         </tbody>
                     </table>
+                    <button class="layui-btn" onclick="bank_add('添加用户','#springUrl("/common/user_add_member?group=${group}")',600,400)">添加用户</button>
                 </div>
             </div>
         </div>

@@ -17,6 +17,9 @@ public class UserGroupDto {
     private String groupNo;
     private String subGroupNo;
     private Long companyId;
+    private String ownerName;
+    private String idCard;
+
 
     public Long getId() {
         return id;

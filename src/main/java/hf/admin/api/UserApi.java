@@ -3,21 +3,28 @@ package hf.admin.api;
 import hf.admin.enums.UserType;
 import hf.admin.model.*;
 import hf.admin.rpc.AdminClient;
+import hf.admin.rpc.UserClient;
 import hf.admin.utils.MapUtils;
 import hf.base.biz.CacheService;
 import hf.base.client.DefaultClient;
+import hf.base.contants.CodeManager;
+import hf.base.model.UserGroup;
 import hf.base.model.UserInfo;
+import hf.base.utils.Pagenation;
 import hf.base.utils.ResponseResult;
+import hf.base.utils.Utils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -33,6 +40,8 @@ public class UserApi {
     private AdminClient adminClient;
     @Autowired
     private DefaultClient client;
+    @Autowired
+    private UserClient userClient;
     /**
      * 登陆
      * @param loginId
@@ -108,10 +117,11 @@ public class UserApi {
 
         userGroupRequest.setCompanyId(groupId);
 
-        List<UserGroupDto> list = adminClient.getUserGroupList(userGroupRequest);
+        Pagenation<UserGroup> pagenation = adminClient.getUserGroupList(userGroupRequest);
 
-        ModelAndView modelAndView = new ModelAndView("admin_user_index");
-        modelAndView.addObject("users",list);
+        ModelAndView modelAndView = new ModelAndView("admin_user_authorized");
+        modelAndView.addObject("pageInfo",pagenation);
+        modelAndView.addObject("userGroupRequest",userGroupRequest);
         return modelAndView;
     }
 
@@ -201,5 +211,59 @@ public class UserApi {
         } else {
             return MapUtils.buildMap("status",false,"msg",response.getMsg());
         }
+    }
+
+    @RequestMapping(value = "/save_bank_card",method = RequestMethod.POST)
+    public @ResponseBody Map<String,Object> saveBankCard(HttpServletRequest request, HttpServletResponse response) {
+        String groupId = request.getParameter("groupId");
+        String id = request.getParameter("id");
+        String bank = request.getParameter("bank");
+        String bankNo = request.getParameter("bankNo");
+        String deposit = request.getParameter("deposit");
+        String owner = request.getParameter("owner");
+        String province = request.getParameter("province");
+        String city = request.getParameter("city");
+
+        ResponseResult<Boolean> responseResult = userClient.saveBankCard(
+                hf.base.utils.MapUtils.buildMap("groupId",groupId,
+                        "bank",bank,
+                        "bankNo",bankNo,
+                        "deposit",deposit,
+                        "owner",owner,
+                        "province",province,
+                        "city",city,
+                        "id",id));
+
+        if(responseResult.isSuccess()) {
+            return hf.base.utils.MapUtils.buildMap("status",true);
+        }
+        return hf.base.utils.MapUtils.buildMap("status",false);
+    }
+
+    @RequestMapping(value = "/save_user_info",method = RequestMethod.POST ,produces = "application/json;charset=UTF-8")
+    public ModelAndView saveUserInfo(@RequestBody Map<String,String> params) {
+        String loginId = params.get("loginId");
+        String password = params.get("password");
+        String name = params.get("name");
+        String idCard = params.get("idCard");
+        String tel = params.get("tel");
+        String qq = params.get("qq");
+        String address = params.get("address");
+        String groupId = params.get("userGroup");
+        String id = params.get("id");
+
+        Map<String,Object> map = Utils.buildMap("loginId",loginId,
+                "password",password,
+                "name",name,
+                "idCard",idCard,
+                "tel",tel,
+                "qq",qq,
+                "address",address,
+                "groupId",groupId,
+                "id",id);
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("group_user_list");
+        return modelAndView;
     }
 }

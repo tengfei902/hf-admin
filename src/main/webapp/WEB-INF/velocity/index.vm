@@ -63,9 +63,7 @@
                 </li>
                 <li class="nav-menu"><a href="#"> <i class="fa fa-user"></i> <span class="nav-label">用户管理</span></a>
                 <ul class="nav nav-second-level">
-                    <li><a href="#springUrl('/common/admin_user_authorized')" class="J_menuItem">商户认证</a></li>
-                    <li><a href="#springUrl('/common/admin_user_index')" class="J_menuItem">商户管理</a></li>
-                    <li><a href="#springUrl('/common/admin_user_index2')" class="J_menuItem">用户管理</a></li>
+                    <li><a href="#springUrl('/common/admin_user_authorized')" class="J_menuItem">商户列表</a></li>
                 </ul>
                 </li>
                 <li class="nav-menu"><a href="#"> <i class="fa fa-bank"></i> <span class="nav-label">通道管理</span></a>
