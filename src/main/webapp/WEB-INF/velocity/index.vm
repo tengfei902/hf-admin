@@ -69,7 +69,6 @@
                 <li class="nav-menu"><a href="#"> <i class="fa fa-bank"></i> <span class="nav-label">通道管理</span></a>
                 <ul class="nav nav-second-level">
                     <li><a href="#springUrl('/common/admin_channel_index')" class="J_menuItem">供应商通道管理</a></li>
-                    <li><a href="#springUrl('/common/admin_channel_product')" class="J_menuItem">支付产品管理</a></li>
                 </ul>
                 </li>
                 <li class="nav-menu"><a href="#"> <i class="fa fa fa-sellsy"></i> <span class="nav-label">订单管理</span></a>
@@ -77,6 +76,13 @@
                     <li><a href="#springUrl('/common/admin_order_index')" class="J_menuItem">交易管理</a></li>
                     <li><a href="#springUrl('/common/admin_order_changeRecord')" class="J_menuItem">资金变动管理</a></li>
                 </ul>
+                </li>
+                <li class="nav-menu"><a href="#"> <i class="fa fa fa-sellsy"></i> <span class="nav-label">账户管理</span></a>
+                    <ul class="nav nav-second-level">
+                        <li><a href="#springUrl('/common/admin_account_index')" class="J_menuItem">账户列表</a></li>
+                        <li><a href="#springUrl('/common/admin_account_admin')" class="J_menuItem">管理员账户</a></li>
+                        <li><a href="#springUrl('/common/admin_order_changeRecord')" class="J_menuItem">资金变动管理</a></li>
+                    </ul>
                 </li>
                 <li class="nav-menu"><a href="#"> <i class="fa fa fa-cubes"></i> <span class="nav-label">提款管理</span></a>
                 <ul class="nav nav-second-level">

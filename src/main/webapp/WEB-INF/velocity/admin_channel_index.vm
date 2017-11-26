@@ -42,6 +42,7 @@
                                         <th>编号</th>
                                         <th>供应商</th>
                                         <th>接口代码</th>
+                                        <th>接口描述</th>
                                         <th>接口状态</th>
 										<th>费率</th>
                                         <th>地址</th>
@@ -54,6 +55,7 @@
                                         <td>${channel.id}</td>
                                         <td>${channel.channelName}</td>
                                         <td>${channel.channelCode}</td>
+                                    	<td>${channel.codeDesc}</td>
                                     	<td>
                                         <div class="layui-form">
                                             <input type="checkbox" name="status" value="${channel.status}" data-id="${channel.id}" #if(${channel.status}==0) checked #end data-name="联动优势" lay-skin="switch" lay-filter="switchTest" lay-text="开启|关闭">
@@ -62,8 +64,7 @@
 										<td><span id="dfRate207">${channel.feeRate}</span></td>
                                         <td>
 											<div class="layui-btn-group">
-											  <button class="layui-btn layui-btn-small" onclick="admin_editRate('编辑费率','/Admin_Channel_editRate_pid_207.html')">费率</button>
-											  <button class="layui-btn layui-btn-small" onclick="admin_edit('编辑供应商接口','/Admin_Channel_editSupplier_pid_207.html')">编辑</button>
+											  <button class="layui-btn layui-btn-small" onclick="admin_edit('编辑供应商接口','#springUrl("/common/admin_add_channel?channelId=${channel.id}")')">编辑</button>
 											  <button class="layui-btn layui-btn-small" onclick="admin_del(this,'207')">删除</button>
 											</div>
                                         </td>

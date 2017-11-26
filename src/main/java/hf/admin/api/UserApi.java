@@ -8,8 +8,8 @@ import hf.admin.utils.MapUtils;
 import hf.base.biz.CacheService;
 import hf.base.client.DefaultClient;
 import hf.base.contants.CodeManager;
-import hf.base.model.UserGroup;
-import hf.base.model.UserInfo;
+import hf.base.dispatcher.DispatchResult;
+import hf.base.model.*;
 import hf.base.utils.Pagenation;
 import hf.base.utils.ResponseResult;
 import hf.base.utils.Utils;
@@ -142,23 +142,21 @@ public class UserApi {
     }
 
     @RequestMapping(value = "/save_channel",method = RequestMethod.POST)
-    public ModelAndView saveChannel(HttpServletRequest request) {
+    public @ResponseBody Map<String,Object> saveChannel(HttpServletRequest request) {
         String channelName = request.getParameter("channelName");
         String channelCode = request.getParameter("channelCode");
+        String codeDesc = request.getParameter("codeDesc");
         String feeRate = request.getParameter("feeRate");
         String url = request.getParameter("url");
         String status = request.getParameter("status");
 
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:/common/admin_channel_index");
-
         if(!NumberUtils.isNumber(feeRate)) {
-            return modelAndView;
+            return MapUtils.buildMap("status",false,"msg","费率不能为空!");
         }
 
-        adminClient.saveChannel(MapUtils.buildMap("channelName",channelName,"channelCode",channelCode,"feeRate",feeRate,"url",url,"status",status));
+        adminClient.saveChannel(MapUtils.buildMap("channelName",channelName,"channelCode",channelCode,"feeRate",feeRate,"url",url,"status",status,"codeDesc",codeDesc));
 
-        return modelAndView;
+        return MapUtils.buildMap("status",true);
     }
 
     @RequestMapping(value = "/save_user_channel",method = RequestMethod.POST)
@@ -264,6 +262,161 @@ public class UserApi {
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("group_user_list");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/save_user_group",method = RequestMethod.POST ,produces = "application/json;charset=UTF-8")
+    public @ResponseBody Map<String,Object> saveUserGroup(HttpServletRequest request) {
+        String id = request.getParameter("id");
+        String name = request.getParameter("name");
+        String ownerName = request.getParameter("ownerName");
+        String idCard = request.getParameter("idCard");
+        String tel = request.getParameter("tel");
+        String address = request.getParameter("address");
+        String type = request.getParameter("type");
+        String subGroupId = request.getParameter("subGroupId");
+
+        Map<String,Object> map = MapUtils.buildMap("groupId",id,
+                "name",name,
+                "ownerName",ownerName,
+                "idCard",idCard,
+                "tel",tel,
+                "address",address,
+                "type",type,
+                "subGroupId",subGroupId);
+        try {
+            adminClient.saveUserGroup(map);
+            return MapUtils.buildMap("status",true);
+        } catch (Exception e) {
+            return MapUtils.buildMap("status",false);
+        }
+    }
+
+    @RequestMapping(value = "/getTrdOrderList",method = RequestMethod.POST ,produces = "application/json;charset=UTF-8")
+    public ModelAndView getTradeOrderList(HttpServletRequest request) {
+        Long groupId = Long.parseLong(request.getSession().getAttribute("groupId").toString());
+        int currentPage = 1;
+        TradeRequest tradeRequest = new TradeRequest();
+        tradeRequest.setCurrentPage(1);
+        tradeRequest.setPageSize(15);
+        tradeRequest.setGroupId(groupId);
+        tradeRequest.setCurrentPage(currentPage);
+
+        if(!StringUtils.isEmpty(request.getParameter("mchId"))) {
+            tradeRequest.setMchId(request.getParameter("mchId"));
+        }
+
+        if(!StringUtils.isEmpty(request.getParameter("outTradeNo"))) {
+            tradeRequest.setOutTradeNo(request.getParameter("outTradeNo"));
+        }
+
+        if(!StringUtils.isEmpty(request.getParameter("type"))) {
+            tradeRequest.setType(Integer.parseInt(request.getParameter("type")));
+        }
+
+        if(!StringUtils.isEmpty(request.getParameter("channelCode"))) {
+            tradeRequest.setChannelCode(request.getParameter("channelCode"));
+        }
+
+        if(!StringUtils.isEmpty(request.getParameter("status"))) {
+            tradeRequest.setStatus(Integer.parseInt(request.getParameter("status")));
+        }
+
+        Pagenation<TradeRequestDto> pagenation = client.getTradeList(tradeRequest);
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("admin_order_index");
+        modelAndView.addObject("pageInfo",pagenation);
+        modelAndView.addObject("requestInfo",tradeRequest);
+
+        List<Channel> channels = adminClient.getChannelList();
+        modelAndView.addObject("channels",channels);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/getAccountList",method = RequestMethod.POST ,produces = "application/json;charset=UTF-8")
+    public ModelAndView getAccountList(HttpServletRequest request) {
+        Long groupId = Long.parseLong(request.getSession().getAttribute("groupId").toString());
+        AccountRequest accountRequest = new AccountRequest();
+        accountRequest.setCurrentPage(1);
+        accountRequest.setPageSize(15);
+        accountRequest.setGroupId(groupId);
+
+        if(!StringUtils.isEmpty(request.getParameter("mchId"))) {
+            accountRequest.setMchId(request.getParameter("mchId"));
+        }
+
+        if(!StringUtils.isEmpty(request.getParameter("groupType"))) {
+            accountRequest.setGroupType(Integer.parseInt(request.getParameter("groupType")));
+        }
+
+        if(!StringUtils.isEmpty(request.getParameter("name"))) {
+            accountRequest.setName(request.getParameter("name"));
+        }
+
+        Pagenation<AccountPageInfo> pagenation = client.getAccountList(accountRequest);
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("admin_account_index");
+        modelAndView.addObject("pageInfo",pagenation);
+        modelAndView.addObject("requestInfo",accountRequest);
+
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/getAdminAccountList",method = RequestMethod.POST ,produces = "application/json;charset=UTF-8")
+    public ModelAndView getAdminAccountList(HttpServletRequest request) {
+        Long groupId = Long.parseLong(request.getSession().getAttribute("groupId").toString());
+        AccountRequest accountRequest = new AccountRequest();
+        accountRequest.setCurrentPage(1);
+        accountRequest.setPageSize(15);
+        accountRequest.setGroupId(groupId);
+
+        if(!StringUtils.isEmpty(request.getParameter("mchId"))) {
+            accountRequest.setMchId(request.getParameter("mchId"));
+        }
+
+        if(!StringUtils.isEmpty(request.getParameter("name"))) {
+            accountRequest.setName(request.getParameter("name"));
+        }
+
+        Pagenation<AdminAccountPageInfo> pagenation = client.getAdminAccountList(accountRequest);
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("admin_account_admin");
+        modelAndView.addObject("pageInfo",pagenation);
+        modelAndView.addObject("requestInfo",accountRequest);
+
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/getOprList",method = RequestMethod.POST ,produces = "application/json;charset=UTF-8")
+    public ModelAndView getOprList(HttpServletRequest request) {
+        Long groupId = Long.parseLong(request.getSession().getAttribute("groupId").toString());
+        AccountOprRequest accountOprRequest = new AccountOprRequest();
+        accountOprRequest.setPageSize(15);
+        accountOprRequest.setCurrentPage(1);
+        accountOprRequest.setGroupId(groupId);
+        if(StringUtils.isNotEmpty(request.getParameter("name"))) {
+            accountOprRequest.setName(request.getParameter("name"));
+        }
+        if(StringUtils.isNotEmpty(request.getParameter("outTradeNo"))) {
+            accountOprRequest.setOutTradeNo(request.getParameter("outTradeNo"));
+        }
+        if(StringUtils.isNotEmpty(request.getParameter("status"))) {
+            accountOprRequest.setStatus(Integer.parseInt(request.getParameter("status")));
+        }
+        if(StringUtils.isNotEmpty(request.getParameter("oprType"))) {
+            accountOprRequest.setOprType(Integer.parseInt(request.getParameter("oprType")));
+        }
+
+        Pagenation<AccountOprInfo> pagenation = client.getAccountOprLogList(accountOprRequest);
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("admin_order_changeRecord");
+        modelAndView.addObject("pageInfo",pagenation);
+        modelAndView.addObject("requestInfo",accountOprRequest);
+
         return modelAndView;
     }
 }

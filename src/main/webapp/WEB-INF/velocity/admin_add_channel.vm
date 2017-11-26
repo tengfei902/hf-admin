@@ -21,39 +21,45 @@
     <div class="row">
         <div class="col-sm-12">
             <form class="layui-form" action="#springUrl('/user/save_channel')" id="payaccess">
-                <input type="hidden" name="id" value="">
+                <input type="hidden" name="id" #if(${channel.id}) value="${channel.id}" #else value="" #end value="">
                 <div class="layui-form-item">
                     <label class="layui-form-label">供应商名称：</label>
                     <div class="layui-input-block">
-                        <input type="text" name="channelName" autocomplete="off" value="" placeholder="供应商名称" class="layui-input">
+                        <input type="text" name="channelName" autocomplete="off" #if(${channel.channelName}) value="${channel.channelName}" #else value="" #end placeholder="供应商名称" class="layui-input">
                     </div>
                 </div>
 
                 <div class="layui-form-item">
                     <label class="layui-form-label">接口代码：</label>
                     <div class="layui-input-block">
-                        <input type="text" name="channelCode" value="" autocomplete="off" class="layui-input">
+                        <input type="text" name="channelCode" #if(${channel.channelCode}) value="${channel.channelCode}" #else value="" #end autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">接口描述：</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="codeDesc" #if(${channel.codeDesc}) value="${channel.codeDesc}" #else value="" #end autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">费率：</label>
                     <div class="layui-input-block">
-                        <input type="text" placeholder="费率" name="feeRate" value="" autocomplete="off" class="layui-input">
+                        <input type="text" placeholder="费率" name="feeRate" #if(${channel.feeRate}) value="${channel.feeRate}" #else value="" #end autocomplete="off" class="layui-input">
                     </div>
                 </div>
 
                 <div class="layui-form-item">
                     <label class="layui-form-label">供应商域名：</label>
                     <div class="layui-input-block">
-                        <input type="text" name="url" autocomplete="off" value="" placeholder="供应商域名" class="layui-input">
+                        <input type="text" name="url" autocomplete="off" #if(${channel.url}) value="${channel.url}" #else value="" #end placeholder="供应商域名" class="layui-input">
                     </div>
                 </div>
 
                 <div class="layui-form-item">
                     <label class="layui-form-label">状态：</label>
                     <div class="layui-input-block">
-                        <input type="radio" name="status"  value="0" title="开启" checked="">
-                        <input type="radio" name="status" checked value="99" title="关闭">
+                        <input type="radio" name="status" value="0" title="开启" #if(${channel.status}==0) checked="checked" #end>
+                        <input type="radio" name="status" value="1" title="关闭" #if(${channel.status}==1) checked="checked" #end>
                     </div>
                 </div>
 
@@ -92,7 +98,7 @@
                             parent.layer.close(index);
                         });
                     }else{
-                        layer.msg("操作失败!", {icon: 5},function () {
+                        layer.msg(res.msg, {icon: 5},function () {
                             var index = parent.layer.getFrameIndex(window.name);
                             parent.layer.close(index);
                         });

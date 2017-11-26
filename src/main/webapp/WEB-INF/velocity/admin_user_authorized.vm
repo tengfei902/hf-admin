@@ -107,12 +107,17 @@
                                 <td>$!date.format('yyyy-MM-dd HH:mm:ss ',$!group.createTime)</td>
                                 <td>
                                     <div class="layui-btn-group">
+                                        #if(${group.status}!=10 && ${group.status}!=99) {
+                                            <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('编辑','#springUrl("/common/admin_add_group?editedGroupId=${group.id}")',800)">编辑</button>
+                                        #end
                                         <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('查看银行','#springUrl("/common/user_bankcard?id=${group.id}")',800)">银行</button>
                                         <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('用户列表','#springUrl("/common/group_user_list?groupId=${group.id}")',800)">用户列表</button>
                                         <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('编辑通道','#springUrl("/common/user_channel_list?id=${group.id}")',800)">通道</button>
                                         <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('设置结算账号','#springUrl("/common/admin_bank_profile?id=${group.id}")',800)">设置结算账号</button>
-                                        <button class="layui-btn layui-btn-small lineblud" onclick="member_back(this,'${group.id}')">退回</button>
-                                        <button class="layui-btn layui-btn-small lineblud" onclick="member_pass(this,'${group.id}')">验证通过</button>
+                                        #if(${group.status}==1)
+                                            <button class="layui-btn layui-btn-small lineblud" onclick="member_back(this,'${group.id}')">退回</button>
+                                            <button class="layui-btn layui-btn-small lineblud" onclick="member_pass(this,'${group.id}')">验证通过</button>
+                                        #end
                                     </div>
                                 </td>
                             </tr>
@@ -121,17 +126,24 @@
                     </table>
                     <div class="pagex">
                         <div class="layui-box layui-laypage layui-laypage-default" id="layui-laypage-0">
-                            #foreach($index in [1,${pageInfo.totalPage}])
-                                #if($index == ${pageInfo.currentPage})
-                                    <span class="layui-laypage-curr current">
-                                    <em class="layui-laypage-em"></em><em>$index</em>
-                                    </span>
-                                #else
-                                    <a class="num" href='#springUrl("/common/admin_user_authorized?currentPage=$index")'>$index</a>
+                            #if(${pageInfo.totalPage} == 1)
+                                <span class="layui-laypage-curr current">
+                                    <em class="layui-laypage-em"></em><em>${pageInfo.totalPage}</em>
+                                </span>
+                            #else
+                                #foreach($index in [1,${pageInfo.totalPage}])
+                                    #if($index == ${pageInfo.currentPage})
+                                        <span class="layui-laypage-curr current">
+                                        <em class="layui-laypage-em"></em><em>$index</em>
+                                        </span>
+                                    #else
+                                        <a class="num" href='#springUrl("/common/admin_user_authorized?currentPage=$index")'>$index</a>
+                                    #end
                                 #end
+                                <a class="next layui-laypage-next" href='#springUrl("/common/admin_user_authorized?currentPage=${pageInfo.nextPage}")'>下一页</a>
                             #end
-                            <a class="next layui-laypage-next" href='#springUrl("/common/admin_user_authorized?currentPage=${pageInfo.nextPage}")'>下一页</a>
                         </div>
+                        <button class="layui-btn" onclick="group_add('添加商户','#springUrl("/common/admin_add_group")',800,600)">添加商户</button>
                     </div>
                     <!--用户列表-->
                     <div class="page"><div  class="layui-box layui-laypage layui-laypage-default" id="layui-laypage-0">    </div></div>
@@ -208,6 +220,10 @@
         });
     });
 
+    function group_add(title,url,w,h){
+        x_admin_show(title,url,w,h);
+    }
+
     //批量删除提交
     function delAll() {
         layer.confirm('确认要删除吗？', function (index) {
@@ -282,7 +298,7 @@
                 success:function(res){
                     if(res.status){
                         jQuery(obj).parents("tr").remove();
-                        layer.msg('已退回!',{icon:1,time:1000});
+                        layer.msg('已通过!',{icon:1,time:1000});
                     } else {
                         layer.msg(res.msg,{icon:-1,time:1000});
                     }

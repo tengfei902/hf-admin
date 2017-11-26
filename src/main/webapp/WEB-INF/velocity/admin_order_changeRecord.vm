@@ -35,48 +35,47 @@
             </div>
             <!--条件查询-->
             <div class="ibox-content">
-                <form class="layui-form" action="" method="get" autocomplete="off" id="orderform">
+                <form class="layui-form" action="#springUrl('/user/getOprList')" method="post" autocomplete="off" id="orderform">
                     <input type="hidden" name="m" value="Admin">
                     <input type="hidden" name="c" value="Order">
                     <input type="hidden" name="a" value="changeRecord">
                     <div class="layui-form-item">
                         <div class="layui-inline">
                             <div class="layui-input-inline">
-                                <input type="text" name="memberid" autocomplete="off" placeholder="请输入商户号" class="layui-input" value="">
+                                <input type="text" name="name" autocomplete="off" placeholder="请输入商户名" class="layui-input" #if(${requestInfo.name}) value="${requestInfo.name}" #else value="" #end>
                             </div>
 
                             <div class="layui-input-inline">
-                                <input type="text" name="orderid" autocomplete="off" placeholder="请输入订单号" class="layui-input" value="">
-                            </div>
-                            <div class="layui-input-inline">
-                                <input type="text" class="layui-input" name="createtime" id="createtime" placeholder="起始时间" value="" lay-key="1">
+                                <input type="text" name="outTradeNo" autocomplete="off" placeholder="请输入订单号" class="layui-input" #if(${requestInfo.outTradeNo}) value="${requestInfo.outTradeNo}" #else value="" #end value="">
                             </div>
                         </div>
                         <div class="layui-inline">
                             <div class="layui-input-inline">
-                                <select name="tongdao">
-                                    <option value="">全部通道</option>
-                                                                    </select><div class="layui-unselect layui-form-select"><div class="layui-select-title"><input type="text" placeholder="全部通道" value="" readonly="" class="layui-input layui-unselect"><i class="layui-edge"></i></div><dl class="layui-anim layui-anim-upbit"><dd lay-value="" class="layui-select-tips">全部通道</dd></dl></div>
+                                <select name="status">
+                                    <option value="">全部状态</option>
+                                    <option value="0" #if(${requestInfo.status} == 1) selected #end>未处理</option>
+                                    <option value="1" #if(${requestInfo.status} == 2) selected #end>成功,未入账</option>
+                                    <option value="10" #if(${requestInfo.status} == 10) selected #end>成功</option>
+                                    <option value="98" #if(${requestInfo.status} == 98) selected #end>已退款</option>
+                                    <option value="99" #if(${requestInfo.status} == 99) selected #end>处理失败</option>
+                                </select>
                             </div>
                             <div class="layui-input-inline">
-                                <select name="bank">
+                                <select name="oprType">
                                     <option value="">全部类型</option>
-                                    <option value="1">付款</option>
-                                    <option value="3">手动增加</option>
-                                    <option value="4">手动减少</option>
-                                    <option value="6">结算</option>
-                                    <option value="10">委托结算</option>
-                                    <option value="7">冻结</option>
-                                    <option value="8">解冻</option>
-                                    <option value="9">提成</option>
-                                </select><div class="layui-unselect layui-form-select"><div class="layui-select-title"><input type="text" placeholder="全部类型" value="" readonly="" class="layui-input layui-unselect"><i class="layui-edge"></i></div><dl class="layui-anim layui-anim-upbit"><dd lay-value="" class="layui-select-tips">全部类型</dd><dd lay-value="1" class="">付款</dd><dd lay-value="3" class="">手动增加</dd><dd lay-value="4" class="">手动减少</dd><dd lay-value="6" class="">结算</dd><dd lay-value="10" class="">委托结算</dd><dd lay-value="7" class="">冻结</dd><dd lay-value="8" class="">解冻</dd><dd lay-value="9" class="">提成</dd></dl></div>
+                                    <option value="0" #if(${requestInfo.oprType} == 0) selected #end>付款</option>
+                                    <option value="1" #if(${requestInfo.oprType} == 1) selected #end>手续费</option>
+                                    <option value="2" #if(${requestInfo.oprType} == 2) selected #end>退款</option>
+                                    <option value="3" #if(${requestInfo.oprType} == 3) selected #end>撤销交易</option>
+                                    <option value="4" #if(${requestInfo.oprType} == 4) selected #end>结算</option>
+                                    <option value="5" #if(${requestInfo.oprType} == 5) selected #end>提成</option>
+                                </select>
                             </div>
                         </div>
 
                         <div class="layui-inline">
                             <button type="submit" class="layui-btn"><span class="glyphicon glyphicon-search"></span> 搜索
                             </button>
-                            <a href="javascript:;" id="export" class="layui-btn layui-btn-danger"><span class="glyphicon glyphicon-export"></span> 导出数据</a>
                         </div>
                     </div>
                 </form>
@@ -86,367 +85,52 @@
                     <thead>
                     <tr>
                         <th lay-data="{field:'key',width:60}"></th>
-                        <th lay-data="{field:'transid', width:240}">订单号</th>
-                        <th lay-data="{field:'userid', width:100,style:'color:#060;'}">用户名</th>
-                        <th lay-data="{field:'lx', width:90}">类型</th>
-                        <th lay-data="{field:'tcuserid', width:100,style:'color:#060;'}">提成用户名</th>
-                        <th lay-data="{field:'tcdengji', width:90}">提成级别</th>
+                        <th lay-data="{field:'outTradeNo', width:240}">订单号</th>
+                        <th lay-data="{field:'mchId', width:100,style:'color:#060;'}">用户编号</th>
+                        <th lay-data="{field:'name', width:100,style:'color:#060;'}">账户名</th>
+                        <th lay-data="{field:'oprType', width:90}">交易类型</th>
                         <th lay-data="{field:'money', width:100}">变动金额</th>
                         <th lay-data="{field:'datetime', width:180}">变动时间</th>
-                        <th lay-data="{field:'tongdao', width:120}">通道</th>
+                        <th lay-data="{field:'statusDesc', width:100}">状态</th>
                         <th lay-data="{field:'contentstr', width:100}">备注</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                            <td>55</td>
-                            <td style="text-align:center;"></td>
-                            <td style="text-align:center; color:#090;">
-                                demouser                            </td>
-                            <td style="text-align:center;">
-                                手动增加                            </td>
-                            <td style="text-align:center; color:#060">
-                                -                            </td>
-                            <td style="text-align:center; color:#666">&nbsp;</td>
-                            <td style="text-align:center;">
-                                                                    <span style="color:#030">                                5000.000                                </span>
-                            </td>
-                            <td style="text-align:center;">2017-10-20 09:39:27</td>
-                            <td style="text-align:center;"></td>
-                            <td style="text-align:center;">
-                                                                    54                            </td>
-                        </tr><tr>
-                            <td>54</td>
-                            <td style="text-align:center;"></td>
-                            <td style="text-align:center; color:#090;">
-                                                            </td>
-                            <td style="text-align:center;">
-                                手动减少                            </td>
-                            <td style="text-align:center; color:#060">
-                                -                            </td>
-                            <td style="text-align:center; color:#666">&nbsp;</td>
-                            <td style="text-align:center;">
-                                                                    <span style="color:#030">                                9000.000                                </span>
-                            </td>
-                            <td style="text-align:center;">2017-10-11 10:07:38</td>
-                            <td style="text-align:center;"></td>
-                            <td style="text-align:center;">
-                                                                    1                            </td>
-                        </tr><tr>
-                            <td>53</td>
-                            <td style="text-align:center;"></td>
-                            <td style="text-align:center; color:#090;">
-                                demouser                            </td>
-                            <td style="text-align:center;">
-                                手动减少                            </td>
-                            <td style="text-align:center; color:#060">
-                                -                            </td>
-                            <td style="text-align:center; color:#666">&nbsp;</td>
-                            <td style="text-align:center;">
-                                                                    <span style="color:#030">                                10000.000                                </span>
-                            </td>
-                            <td style="text-align:center;">2017-10-11 10:05:02</td>
-                            <td style="text-align:center;"></td>
-                            <td style="text-align:center;">
-                                                                    1                            </td>
-                        </tr><tr>
-                            <td>52</td>
-                            <td style="text-align:center;"></td>
-                            <td style="text-align:center; color:#090;">
-                                                            </td>
-                            <td style="text-align:center;">
-                                结算                            </td>
-                            <td style="text-align:center; color:#060">
-                                -                            </td>
-                            <td style="text-align:center; color:#666">&nbsp;</td>
-                            <td style="text-align:center;">
-                                                                    <span style="color:#030">                                1000.000                                </span>
-                            </td>
-                            <td style="text-align:center;">2017-09-27 17:26:08</td>
-                            <td style="text-align:center;"></td>
-                            <td style="text-align:center;">
-                                                                    2017-09-27 17:26:08提现操作                            </td>
-                        </tr><tr>
-                            <td>51</td>
-                            <td style="text-align:center;"></td>
-                            <td style="text-align:center; color:#090;">
-                                                            </td>
-                            <td style="text-align:center;">
-                                手动增加                            </td>
-                            <td style="text-align:center; color:#060">
-                                -                            </td>
-                            <td style="text-align:center; color:#666">&nbsp;</td>
-                            <td style="text-align:center;">
-                                                                    <span style="color:#030">                                10000.000                                </span>
-                            </td>
-                            <td style="text-align:center;">2017-09-27 17:20:54</td>
-                            <td style="text-align:center;"></td>
-                            <td style="text-align:center;">
-                                                                    +                            </td>
-                        </tr><tr>
-                            <td>50</td>
-                            <td style="text-align:center;"></td>
-                            <td style="text-align:center; color:#090;">
-                                demouser                            </td>
-                            <td style="text-align:center;">
-                                手动增加                            </td>
-                            <td style="text-align:center; color:#060">
-                                -                            </td>
-                            <td style="text-align:center; color:#666">&nbsp;</td>
-                            <td style="text-align:center;">
-                                                                    <span style="color:#030">                                10000.000                                </span>
-                            </td>
-                            <td style="text-align:center;">2017-09-27 17:16:06</td>
-                            <td style="text-align:center;"></td>
-                            <td style="text-align:center;">
-                                                                    ++                            </td>
-                        </tr><tr>
-                            <td>49</td>
-                            <td style="text-align:center;">Demopay201709221513597022</td>
-                            <td style="text-align:center; color:#090;">
-                                                            </td>
-                            <td style="text-align:center;">
-                                付款                            </td>
-                            <td style="text-align:center; color:#060">
-                                -                            </td>
-                            <td style="text-align:center; color:#666">&nbsp;</td>
-                            <td style="text-align:center;">
-                                                                    <span style="color:#030">                                0.100                                </span>
-                            </td>
-                            <td style="text-align:center;">2017-09-22 15:14:38</td>
-                            <td style="text-align:center;">牛支付支付宝扫码</td>
-                            <td style="text-align:center;">
-                                <spans style="color:#060;">充值订单                                                                </spans></td>
-                        </tr><tr>
-                            <td>48</td>
-                            <td style="text-align:center;">Demopay201709181344361463</td>
-                            <td style="text-align:center; color:#090;">
-                                                            </td>
-                            <td style="text-align:center;">
-                                付款                            </td>
-                            <td style="text-align:center; color:#060">
-                                -                            </td>
-                            <td style="text-align:center; color:#666">&nbsp;</td>
-                            <td style="text-align:center;">
-                                                                    <span style="color:#030">                                0.010                                </span>
-                            </td>
-                            <td style="text-align:center;">2017-09-18 13:45:26</td>
-                            <td style="text-align:center;">牛支付支付宝扫码</td>
-                            <td style="text-align:center;">
-                                <spans style="color:#060;">充值订单                                                                </spans></td>
-                        </tr><tr>
-                            <td>47</td>
-                            <td style="text-align:center;">Demopay201709181342588123</td>
-                            <td style="text-align:center; color:#090;">
-                                                            </td>
-                            <td style="text-align:center;">
-                                付款                            </td>
-                            <td style="text-align:center; color:#060">
-                                -                            </td>
-                            <td style="text-align:center; color:#666">&nbsp;</td>
-                            <td style="text-align:center;">
-                                                                    <span style="color:#030">                                0.010                                </span>
-                            </td>
-                            <td style="text-align:center;">2017-09-18 13:43:44</td>
-                            <td style="text-align:center;">牛支付支付宝扫码</td>
-                            <td style="text-align:center;">
-                                <spans style="color:#060;">充值订单                                                                </spans></td>
-                        </tr><tr>
-                            <td>46</td>
-                            <td style="text-align:center;">Demopay201709181329463322</td>
-                            <td style="text-align:center; color:#090;">
-                                                            </td>
-                            <td style="text-align:center;">
-                                付款                            </td>
-                            <td style="text-align:center; color:#060">
-                                -                            </td>
-                            <td style="text-align:center; color:#666">&nbsp;</td>
-                            <td style="text-align:center;">
-                                                                    <span style="color:#030">                                0.010                                </span>
-                            </td>
-                            <td style="text-align:center;">2017-09-18 13:31:56</td>
-                            <td style="text-align:center;">工商银行</td>
-                            <td style="text-align:center;">
-                                <spans style="color:#060;">充值订单                                                                </spans></td>
-                        </tr><tr>
-                            <td>45</td>
-                            <td style="text-align:center;">Demopay201709181221191781</td>
-                            <td style="text-align:center; color:#090;">
-                                                            </td>
-                            <td style="text-align:center;">
-                                付款                            </td>
-                            <td style="text-align:center; color:#060">
-                                -                            </td>
-                            <td style="text-align:center; color:#666">&nbsp;</td>
-                            <td style="text-align:center;">
-                                                                    <span style="color:#030">                                0.010                                </span>
-                            </td>
-                            <td style="text-align:center;">2017-09-18 12:21:41</td>
-                            <td style="text-align:center;">牛支付支付宝扫码</td>
-                            <td style="text-align:center;">
-                                <spans style="color:#060;">充值订单                                                                </spans></td>
-                        </tr><tr>
-                            <td>44</td>
-                            <td style="text-align:center;">Demopay201709181206253148</td>
-                            <td style="text-align:center; color:#090;">
-                                                            </td>
-                            <td style="text-align:center;">
-                                付款                            </td>
-                            <td style="text-align:center; color:#060">
-                                -                            </td>
-                            <td style="text-align:center; color:#666">&nbsp;</td>
-                            <td style="text-align:center;">
-                                                                    <span style="color:#030">                                0.010                                </span>
-                            </td>
-                            <td style="text-align:center;">2017-09-18 12:07:06</td>
-                            <td style="text-align:center;">牛支付支付宝扫码</td>
-                            <td style="text-align:center;">
-                                <spans style="color:#060;">充值订单                                                                </spans></td>
-                        </tr><tr>
-                            <td>43</td>
-                            <td style="text-align:center;">Demopay201709181156332418</td>
-                            <td style="text-align:center; color:#090;">
-                                                            </td>
-                            <td style="text-align:center;">
-                                付款                            </td>
-                            <td style="text-align:center; color:#060">
-                                -                            </td>
-                            <td style="text-align:center; color:#666">&nbsp;</td>
-                            <td style="text-align:center;">
-                                                                    <span style="color:#030">                                0.010                                </span>
-                            </td>
-                            <td style="text-align:center;">2017-09-18 11:57:14</td>
-                            <td style="text-align:center;">牛支付支付宝扫码</td>
-                            <td style="text-align:center;">
-                                <spans style="color:#060;">充值订单                                                                </spans></td>
-                        </tr><tr>
-                            <td>42</td>
-                            <td style="text-align:center;">Demopay201709181129147825</td>
-                            <td style="text-align:center; color:#090;">
-                                                            </td>
-                            <td style="text-align:center;">
-                                付款                            </td>
-                            <td style="text-align:center; color:#060">
-                                -                            </td>
-                            <td style="text-align:center; color:#666">&nbsp;</td>
-                            <td style="text-align:center;">
-                                                                    <span style="color:#030">                                0.010                                </span>
-                            </td>
-                            <td style="text-align:center;">2017-09-18 11:29:55</td>
-                            <td style="text-align:center;">牛支付支付宝扫码</td>
-                            <td style="text-align:center;">
-                                <spans style="color:#060;">充值订单                                                                </spans></td>
-                        </tr><tr>
-                            <td>41</td>
-                            <td style="text-align:center;">Demopay201709181028277887</td>
-                            <td style="text-align:center; color:#090;">
-                                                            </td>
-                            <td style="text-align:center;">
-                                付款                            </td>
-                            <td style="text-align:center; color:#060">
-                                -                            </td>
-                            <td style="text-align:center; color:#666">&nbsp;</td>
-                            <td style="text-align:center;">
-                                                                    <span style="color:#030">                                0.010                                </span>
-                            </td>
-                            <td style="text-align:center;">2017-09-18 10:31:06</td>
-                            <td style="text-align:center;">牛支付支付宝扫码</td>
-                            <td style="text-align:center;">
-                                <spans style="color:#060;">充值订单                                                                </spans></td>
-                        </tr>                    </tbody>
-                </table><div class="layui-form layui-border-box layui-table-view" lay-filter="LAY-table-1" style="width:100%px; "><div class="layui-table-header"><table cellspacing="0" cellpadding="0" border="0" class="layui-table"><thead><tr><th data-field="key"><div class="layui-table-cell laytable-cell-1-key"><span></span></div></th><th data-field="transid"><div class="layui-table-cell laytable-cell-1-transid"><span>订单号</span></div></th><th data-field="userid"><div class="layui-table-cell laytable-cell-1-userid"><span>用户名</span></div></th><th data-field="lx"><div class="layui-table-cell laytable-cell-1-lx"><span>类型</span></div></th><th data-field="tcuserid"><div class="layui-table-cell laytable-cell-1-tcuserid"><span>提成用户名</span></div></th><th data-field="tcdengji"><div class="layui-table-cell laytable-cell-1-tcdengji"><span>提成级别</span></div></th><th data-field="money"><div class="layui-table-cell laytable-cell-1-money"><span>变动金额</span></div></th><th data-field="datetime"><div class="layui-table-cell laytable-cell-1-datetime"><span>变动时间</span></div></th><th data-field="tongdao"><div class="layui-table-cell laytable-cell-1-tongdao"><span>通道</span></div></th><th data-field="contentstr"><div class="layui-table-cell laytable-cell-1-contentstr"><span>备注</span></div></th></tr></thead></table></div><div class="layui-table-body layui-table-main"><table cellspacing="0" cellpadding="0" border="0" class="layui-table"><tbody><tr data-index="0"><td data-field="key"><div class="layui-table-cell laytable-cell-1-key">55</div></td><td data-field="transid"><div class="layui-table-cell laytable-cell-1-transid"></div></td><td data-field="userid" style="color:#060;"><div class="layui-table-cell laytable-cell-1-userid">
-                                demouser                            </div></td><td data-field="lx"><div class="layui-table-cell laytable-cell-1-lx">
-                                手动增加                            </div></td><td data-field="tcuserid" style="color:#060;"><div class="layui-table-cell laytable-cell-1-tcuserid">
-                                -                            </div></td><td data-field="tcdengji"><div class="layui-table-cell laytable-cell-1-tcdengji">&nbsp;</div></td><td data-field="money"><div class="layui-table-cell laytable-cell-1-money">
-                                                                    <span style="color:#030">                                5000.000                                </span>
-                            </div></td><td data-field="datetime"><div class="layui-table-cell laytable-cell-1-datetime">2017-10-20 09:39:27</div></td><td data-field="tongdao"><div class="layui-table-cell laytable-cell-1-tongdao"></div></td><td data-field="contentstr"><div class="layui-table-cell laytable-cell-1-contentstr">
-                                                                    54                            </div></td></tr><tr data-index="1"><td data-field="key"><div class="layui-table-cell laytable-cell-1-key">54</div></td><td data-field="transid"><div class="layui-table-cell laytable-cell-1-transid"></div></td><td data-field="userid" style="color:#060;"><div class="layui-table-cell laytable-cell-1-userid">
-                                                            </div></td><td data-field="lx"><div class="layui-table-cell laytable-cell-1-lx">
-                                手动减少                            </div></td><td data-field="tcuserid" style="color:#060;"><div class="layui-table-cell laytable-cell-1-tcuserid">
-                                -                            </div></td><td data-field="tcdengji"><div class="layui-table-cell laytable-cell-1-tcdengji">&nbsp;</div></td><td data-field="money"><div class="layui-table-cell laytable-cell-1-money">
-                                                                    <span style="color:#030">                                9000.000                                </span>
-                            </div></td><td data-field="datetime"><div class="layui-table-cell laytable-cell-1-datetime">2017-10-11 10:07:38</div></td><td data-field="tongdao"><div class="layui-table-cell laytable-cell-1-tongdao"></div></td><td data-field="contentstr"><div class="layui-table-cell laytable-cell-1-contentstr">
-                                                                    1                            </div></td></tr><tr data-index="2"><td data-field="key"><div class="layui-table-cell laytable-cell-1-key">53</div></td><td data-field="transid"><div class="layui-table-cell laytable-cell-1-transid"></div></td><td data-field="userid" style="color:#060;"><div class="layui-table-cell laytable-cell-1-userid">
-                                demouser                            </div></td><td data-field="lx"><div class="layui-table-cell laytable-cell-1-lx">
-                                手动减少                            </div></td><td data-field="tcuserid" style="color:#060;"><div class="layui-table-cell laytable-cell-1-tcuserid">
-                                -                            </div></td><td data-field="tcdengji"><div class="layui-table-cell laytable-cell-1-tcdengji">&nbsp;</div></td><td data-field="money"><div class="layui-table-cell laytable-cell-1-money">
-                                                                    <span style="color:#030">                                10000.000                                </span>
-                            </div></td><td data-field="datetime"><div class="layui-table-cell laytable-cell-1-datetime">2017-10-11 10:05:02</div></td><td data-field="tongdao"><div class="layui-table-cell laytable-cell-1-tongdao"></div></td><td data-field="contentstr"><div class="layui-table-cell laytable-cell-1-contentstr">
-                                                                    1                            </div></td></tr><tr data-index="3"><td data-field="key"><div class="layui-table-cell laytable-cell-1-key">52</div></td><td data-field="transid"><div class="layui-table-cell laytable-cell-1-transid"></div></td><td data-field="userid" style="color:#060;"><div class="layui-table-cell laytable-cell-1-userid">
-                                                            </div></td><td data-field="lx"><div class="layui-table-cell laytable-cell-1-lx">
-                                结算                            </div></td><td data-field="tcuserid" style="color:#060;"><div class="layui-table-cell laytable-cell-1-tcuserid">
-                                -                            </div></td><td data-field="tcdengji"><div class="layui-table-cell laytable-cell-1-tcdengji">&nbsp;</div></td><td data-field="money"><div class="layui-table-cell laytable-cell-1-money">
-                                                                    <span style="color:#030">                                1000.000                                </span>
-                            </div></td><td data-field="datetime"><div class="layui-table-cell laytable-cell-1-datetime">2017-09-27 17:26:08</div></td><td data-field="tongdao"><div class="layui-table-cell laytable-cell-1-tongdao"></div></td><td data-field="contentstr"><div class="layui-table-cell laytable-cell-1-contentstr">
-                                                                    2017-09-27 17:26:08提现操作                            </div></td></tr><tr data-index="4"><td data-field="key"><div class="layui-table-cell laytable-cell-1-key">51</div></td><td data-field="transid"><div class="layui-table-cell laytable-cell-1-transid"></div></td><td data-field="userid" style="color:#060;"><div class="layui-table-cell laytable-cell-1-userid">
-                                                            </div></td><td data-field="lx"><div class="layui-table-cell laytable-cell-1-lx">
-                                手动增加                            </div></td><td data-field="tcuserid" style="color:#060;"><div class="layui-table-cell laytable-cell-1-tcuserid">
-                                -                            </div></td><td data-field="tcdengji"><div class="layui-table-cell laytable-cell-1-tcdengji">&nbsp;</div></td><td data-field="money"><div class="layui-table-cell laytable-cell-1-money">
-                                                                    <span style="color:#030">                                10000.000                                </span>
-                            </div></td><td data-field="datetime"><div class="layui-table-cell laytable-cell-1-datetime">2017-09-27 17:20:54</div></td><td data-field="tongdao"><div class="layui-table-cell laytable-cell-1-tongdao"></div></td><td data-field="contentstr"><div class="layui-table-cell laytable-cell-1-contentstr">
-                                                                    +                            </div></td></tr><tr data-index="5"><td data-field="key"><div class="layui-table-cell laytable-cell-1-key">50</div></td><td data-field="transid"><div class="layui-table-cell laytable-cell-1-transid"></div></td><td data-field="userid" style="color:#060;"><div class="layui-table-cell laytable-cell-1-userid">
-                                demouser                            </div></td><td data-field="lx"><div class="layui-table-cell laytable-cell-1-lx">
-                                手动增加                            </div></td><td data-field="tcuserid" style="color:#060;"><div class="layui-table-cell laytable-cell-1-tcuserid">
-                                -                            </div></td><td data-field="tcdengji"><div class="layui-table-cell laytable-cell-1-tcdengji">&nbsp;</div></td><td data-field="money"><div class="layui-table-cell laytable-cell-1-money">
-                                                                    <span style="color:#030">                                10000.000                                </span>
-                            </div></td><td data-field="datetime"><div class="layui-table-cell laytable-cell-1-datetime">2017-09-27 17:16:06</div></td><td data-field="tongdao"><div class="layui-table-cell laytable-cell-1-tongdao"></div></td><td data-field="contentstr"><div class="layui-table-cell laytable-cell-1-contentstr">
-                                                                    ++                            </div></td></tr><tr data-index="6"><td data-field="key"><div class="layui-table-cell laytable-cell-1-key">49</div></td><td data-field="transid"><div class="layui-table-cell laytable-cell-1-transid">Demopay201709221513597022</div></td><td data-field="userid" style="color:#060;"><div class="layui-table-cell laytable-cell-1-userid">
-                                                            </div></td><td data-field="lx"><div class="layui-table-cell laytable-cell-1-lx">
-                                付款                            </div></td><td data-field="tcuserid" style="color:#060;"><div class="layui-table-cell laytable-cell-1-tcuserid">
-                                -                            </div></td><td data-field="tcdengji"><div class="layui-table-cell laytable-cell-1-tcdengji">&nbsp;</div></td><td data-field="money"><div class="layui-table-cell laytable-cell-1-money">
-                                                                    <span style="color:#030">                                0.100                                </span>
-                            </div></td><td data-field="datetime"><div class="layui-table-cell laytable-cell-1-datetime">2017-09-22 15:14:38</div></td><td data-field="tongdao"><div class="layui-table-cell laytable-cell-1-tongdao">牛支付支付宝扫码</div></td><td data-field="contentstr"><div class="layui-table-cell laytable-cell-1-contentstr">
-                                <spans style="color:#060;">充值订单                                                                </spans></div></td></tr><tr data-index="7"><td data-field="key"><div class="layui-table-cell laytable-cell-1-key">48</div></td><td data-field="transid"><div class="layui-table-cell laytable-cell-1-transid">Demopay201709181344361463</div></td><td data-field="userid" style="color:#060;"><div class="layui-table-cell laytable-cell-1-userid">
-                                                            </div></td><td data-field="lx"><div class="layui-table-cell laytable-cell-1-lx">
-                                付款                            </div></td><td data-field="tcuserid" style="color:#060;"><div class="layui-table-cell laytable-cell-1-tcuserid">
-                                -                            </div></td><td data-field="tcdengji"><div class="layui-table-cell laytable-cell-1-tcdengji">&nbsp;</div></td><td data-field="money"><div class="layui-table-cell laytable-cell-1-money">
-                                                                    <span style="color:#030">                                0.010                                </span>
-                            </div></td><td data-field="datetime"><div class="layui-table-cell laytable-cell-1-datetime">2017-09-18 13:45:26</div></td><td data-field="tongdao"><div class="layui-table-cell laytable-cell-1-tongdao">牛支付支付宝扫码</div></td><td data-field="contentstr"><div class="layui-table-cell laytable-cell-1-contentstr">
-                                <spans style="color:#060;">充值订单                                                                </spans></div></td></tr><tr data-index="8"><td data-field="key"><div class="layui-table-cell laytable-cell-1-key">47</div></td><td data-field="transid"><div class="layui-table-cell laytable-cell-1-transid">Demopay201709181342588123</div></td><td data-field="userid" style="color:#060;"><div class="layui-table-cell laytable-cell-1-userid">
-                                                            </div></td><td data-field="lx"><div class="layui-table-cell laytable-cell-1-lx">
-                                付款                            </div></td><td data-field="tcuserid" style="color:#060;"><div class="layui-table-cell laytable-cell-1-tcuserid">
-                                -                            </div></td><td data-field="tcdengji"><div class="layui-table-cell laytable-cell-1-tcdengji">&nbsp;</div></td><td data-field="money"><div class="layui-table-cell laytable-cell-1-money">
-                                                                    <span style="color:#030">                                0.010                                </span>
-                            </div></td><td data-field="datetime"><div class="layui-table-cell laytable-cell-1-datetime">2017-09-18 13:43:44</div></td><td data-field="tongdao"><div class="layui-table-cell laytable-cell-1-tongdao">牛支付支付宝扫码</div></td><td data-field="contentstr"><div class="layui-table-cell laytable-cell-1-contentstr">
-                                <spans style="color:#060;">充值订单                                                                </spans></div></td></tr><tr data-index="9"><td data-field="key"><div class="layui-table-cell laytable-cell-1-key">46</div></td><td data-field="transid"><div class="layui-table-cell laytable-cell-1-transid">Demopay201709181329463322</div></td><td data-field="userid" style="color:#060;"><div class="layui-table-cell laytable-cell-1-userid">
-                                                            </div></td><td data-field="lx"><div class="layui-table-cell laytable-cell-1-lx">
-                                付款                            </div></td><td data-field="tcuserid" style="color:#060;"><div class="layui-table-cell laytable-cell-1-tcuserid">
-                                -                            </div></td><td data-field="tcdengji"><div class="layui-table-cell laytable-cell-1-tcdengji">&nbsp;</div></td><td data-field="money"><div class="layui-table-cell laytable-cell-1-money">
-                                                                    <span style="color:#030">                                0.010                                </span>
-                            </div></td><td data-field="datetime"><div class="layui-table-cell laytable-cell-1-datetime">2017-09-18 13:31:56</div></td><td data-field="tongdao"><div class="layui-table-cell laytable-cell-1-tongdao">工商银行</div></td><td data-field="contentstr"><div class="layui-table-cell laytable-cell-1-contentstr">
-                                <spans style="color:#060;">充值订单                                                                </spans></div></td></tr><tr data-index="10"><td data-field="key"><div class="layui-table-cell laytable-cell-1-key">45</div></td><td data-field="transid"><div class="layui-table-cell laytable-cell-1-transid">Demopay201709181221191781</div></td><td data-field="userid" style="color:#060;"><div class="layui-table-cell laytable-cell-1-userid">
-                                                            </div></td><td data-field="lx"><div class="layui-table-cell laytable-cell-1-lx">
-                                付款                            </div></td><td data-field="tcuserid" style="color:#060;"><div class="layui-table-cell laytable-cell-1-tcuserid">
-                                -                            </div></td><td data-field="tcdengji"><div class="layui-table-cell laytable-cell-1-tcdengji">&nbsp;</div></td><td data-field="money"><div class="layui-table-cell laytable-cell-1-money">
-                                                                    <span style="color:#030">                                0.010                                </span>
-                            </div></td><td data-field="datetime"><div class="layui-table-cell laytable-cell-1-datetime">2017-09-18 12:21:41</div></td><td data-field="tongdao"><div class="layui-table-cell laytable-cell-1-tongdao">牛支付支付宝扫码</div></td><td data-field="contentstr"><div class="layui-table-cell laytable-cell-1-contentstr">
-                                <spans style="color:#060;">充值订单                                                                </spans></div></td></tr><tr data-index="11"><td data-field="key"><div class="layui-table-cell laytable-cell-1-key">44</div></td><td data-field="transid"><div class="layui-table-cell laytable-cell-1-transid">Demopay201709181206253148</div></td><td data-field="userid" style="color:#060;"><div class="layui-table-cell laytable-cell-1-userid">
-                                                            </div></td><td data-field="lx"><div class="layui-table-cell laytable-cell-1-lx">
-                                付款                            </div></td><td data-field="tcuserid" style="color:#060;"><div class="layui-table-cell laytable-cell-1-tcuserid">
-                                -                            </div></td><td data-field="tcdengji"><div class="layui-table-cell laytable-cell-1-tcdengji">&nbsp;</div></td><td data-field="money"><div class="layui-table-cell laytable-cell-1-money">
-                                                                    <span style="color:#030">                                0.010                                </span>
-                            </div></td><td data-field="datetime"><div class="layui-table-cell laytable-cell-1-datetime">2017-09-18 12:07:06</div></td><td data-field="tongdao"><div class="layui-table-cell laytable-cell-1-tongdao">牛支付支付宝扫码</div></td><td data-field="contentstr"><div class="layui-table-cell laytable-cell-1-contentstr">
-                                <spans style="color:#060;">充值订单                                                                </spans></div></td></tr><tr data-index="12"><td data-field="key"><div class="layui-table-cell laytable-cell-1-key">43</div></td><td data-field="transid"><div class="layui-table-cell laytable-cell-1-transid">Demopay201709181156332418</div></td><td data-field="userid" style="color:#060;"><div class="layui-table-cell laytable-cell-1-userid">
-                                                            </div></td><td data-field="lx"><div class="layui-table-cell laytable-cell-1-lx">
-                                付款                            </div></td><td data-field="tcuserid" style="color:#060;"><div class="layui-table-cell laytable-cell-1-tcuserid">
-                                -                            </div></td><td data-field="tcdengji"><div class="layui-table-cell laytable-cell-1-tcdengji">&nbsp;</div></td><td data-field="money"><div class="layui-table-cell laytable-cell-1-money">
-                                                                    <span style="color:#030">                                0.010                                </span>
-                            </div></td><td data-field="datetime"><div class="layui-table-cell laytable-cell-1-datetime">2017-09-18 11:57:14</div></td><td data-field="tongdao"><div class="layui-table-cell laytable-cell-1-tongdao">牛支付支付宝扫码</div></td><td data-field="contentstr"><div class="layui-table-cell laytable-cell-1-contentstr">
-                                <spans style="color:#060;">充值订单                                                                </spans></div></td></tr><tr data-index="13"><td data-field="key"><div class="layui-table-cell laytable-cell-1-key">42</div></td><td data-field="transid"><div class="layui-table-cell laytable-cell-1-transid">Demopay201709181129147825</div></td><td data-field="userid" style="color:#060;"><div class="layui-table-cell laytable-cell-1-userid">
-                                                            </div></td><td data-field="lx"><div class="layui-table-cell laytable-cell-1-lx">
-                                付款                            </div></td><td data-field="tcuserid" style="color:#060;"><div class="layui-table-cell laytable-cell-1-tcuserid">
-                                -                            </div></td><td data-field="tcdengji"><div class="layui-table-cell laytable-cell-1-tcdengji">&nbsp;</div></td><td data-field="money"><div class="layui-table-cell laytable-cell-1-money">
-                                                                    <span style="color:#030">                                0.010                                </span>
-                            </div></td><td data-field="datetime"><div class="layui-table-cell laytable-cell-1-datetime">2017-09-18 11:29:55</div></td><td data-field="tongdao"><div class="layui-table-cell laytable-cell-1-tongdao">牛支付支付宝扫码</div></td><td data-field="contentstr"><div class="layui-table-cell laytable-cell-1-contentstr">
-                                <spans style="color:#060;">充值订单                                                                </spans></div></td></tr><tr data-index="14"><td data-field="key"><div class="layui-table-cell laytable-cell-1-key">41</div></td><td data-field="transid"><div class="layui-table-cell laytable-cell-1-transid">Demopay201709181028277887</div></td><td data-field="userid" style="color:#060;"><div class="layui-table-cell laytable-cell-1-userid">
-                                                            </div></td><td data-field="lx"><div class="layui-table-cell laytable-cell-1-lx">
-                                付款                            </div></td><td data-field="tcuserid" style="color:#060;"><div class="layui-table-cell laytable-cell-1-tcuserid">
-                                -                            </div></td><td data-field="tcdengji"><div class="layui-table-cell laytable-cell-1-tcdengji">&nbsp;</div></td><td data-field="money"><div class="layui-table-cell laytable-cell-1-money">
-                                                                    <span style="color:#030">                                0.010                                </span>
-                            </div></td><td data-field="datetime"><div class="layui-table-cell laytable-cell-1-datetime">2017-09-18 10:31:06</div></td><td data-field="tongdao"><div class="layui-table-cell laytable-cell-1-tongdao">牛支付支付宝扫码</div></td><td data-field="contentstr"><div class="layui-table-cell laytable-cell-1-contentstr">
-                                <spans style="color:#060;">充值订单                                                                </spans></div></td></tr></tbody></table></div><style>.laytable-cell-1-key{ width:60px }.laytable-cell-1-transid{ width:240px }.laytable-cell-1-userid{ width:100px }.laytable-cell-1-lx{ width:90px }.laytable-cell-1-tcuserid{ width:100px }.laytable-cell-1-tcdengji{ width:90px }.laytable-cell-1-money{ width:100px }.laytable-cell-1-datetime{ width:180px }.laytable-cell-1-tongdao{ width:120px }.laytable-cell-1-contentstr{ width:100px }</style></div>
-                <!--交易列表-->
-                <div class="pagex"> <div class="layui-box layui-laypage layui-laypage-default" id="layui-laypage-0">    </div></div>
+                        #foreach($opr in ${pageInfo.data})
+                        <tr>
+                            <td>${opr.id}</td>
+                            <td>${opr.outTradeNo}</td>
+                            <td>${opr.mchId}</td>
+                            <td>${opr.name}</td>
+                            <td>${opr.oprTypeDesc}</td>
+                            #if(${opr.add})
+                                <td style="text-align:center;"><span style="color:#f00">#if(${opr.amount})${opr.amount} #else 0.00 #end</span></td>
+                            #else
+                                <td style="text-align:center;"><span style="color:#12561e">#if(${opr.amount})${opr.amount} #else 0.00 #end</span></td>
+                            #end
+                            <td style="text-align:center;">$!date.format('yyyy-MM-dd HH:mm:ss ',${opr.oprTime})</td>
+                            <td style="text-align:center;">${opr.statusDesc}</td>
+                            <td>${opr.remark}</td>
+                        </tr>
+                        #end
+                    </tbody>
+                </table>
+                <div class="pagex">
+                    <div class="layui-box layui-laypage layui-laypage-default" id="layui-laypage-0">
+                        #if(${pageInfo.totalPage} == 1)
+                            <span class="layui-laypage-curr current"><em class="layui-laypage-em"></em><em>${pageInfo.totalPage}</em></span>
+                        #else
+                            #foreach($index in [1..${pageInfo.totalPage}])
+                                #if($index == ${pageInfo.currentPage})
+                                    <span class="layui-laypage-curr current"><em class="layui-laypage-em"></em><em>$index</em></span>
+                                #else
+                                    <a class="num" href='#springUrl("/common/admin_order_changeRecord?currentPage=$index")'>$index</a>
+                                #end
+                            #end
+                            <a class="next layui-laypage-next" href='#springUrl("/common/admin_order_changeRecord?currentPage=${pageInfo.nextPage}")'>下一页</a>
+                        #end
+                    </div>
+                </div>
             </div>
         </div>
     </div>
