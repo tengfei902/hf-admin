@@ -91,11 +91,6 @@
                     <li><a href="#springUrl('/common/admin_withdrawal_payment')" class="J_menuItem">代付管理</a></li>
                 </ul>
                 </li>
-                </li><li class="nav-menu"><a href="#"> <i class="fa fa-book"></i> <span class="nav-label">代理管理</span>
-            </a>
-                <ul class="nav nav-second-level">
-                    <li><a href="#springUrl('/common/admin_Agent_members')" class="J_menuItem">代理管理</a></li>
-                </ul>
             </li>
             </ul>
         </div>

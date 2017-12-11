@@ -117,17 +117,21 @@
                 </table>
                 <div class="pagex">
                     <div class="layui-box layui-laypage layui-laypage-default" id="layui-laypage-0">
-                        #if(${pageInfo.totalPage} == 1)
-                            <span class="layui-laypage-curr current"><em class="layui-laypage-em"></em><em>${pageInfo.totalPage}</em></span>
-                        #else
-                            #foreach($index in [1..${pageInfo.totalPage}])
-                                #if($index == ${pageInfo.currentPage})
-                                    <span class="layui-laypage-curr current"><em class="layui-laypage-em"></em><em>$index</em></span>
-                                #else
-                                    <a class="num" href='#springUrl("/common/admin_order_changeRecord?currentPage=$index")'>$index</a>
-                                #end
+                        #if(${pageInfo.showPage.showHead})
+                            <a class="num" href='#springUrl("/common/admin_order_changeRecord?currentPage=1&${urlParams}")'>首页</a>
+                        #end
+                        #foreach($page in ${pageInfo.showPage.pages})
+                            #if($page.selected)
+                                <span class="layui-laypage-curr current"><em class="layui-laypage-em"></em><em>$page.label</em></span>
+                            #else
+                                <a class="num" href='#springUrl("/common/admin_order_changeRecord?currentPage=${page.pageIndex}&${urlParams}")'>$page.label</a>
                             #end
-                            <a class="next layui-laypage-next" href='#springUrl("/common/admin_order_changeRecord?currentPage=${pageInfo.nextPage}")'>下一页</a>
+                        #end
+                        #if($pageInfo.hasNext)
+                            <a class="num" href='#springUrl("/common/admin_order_changeRecord?currentPage=${pageInfo.nextPage}&${urlParams}")'>下一页</a>
+                        #end
+                        #if($pageInfo.showPage.showTail)
+                            <a class="num" href='#springUrl("/common/admin_order_changeRecord?currentPage=${pageInfo.tailPage.pageIndex}&${urlParams}")'>${pageInfo.tailPage.label}</a>
                         #end
                     </div>
                 </div>

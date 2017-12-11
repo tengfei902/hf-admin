@@ -27,6 +27,9 @@ public class DashboardDispatcher implements Dispatcher {
         dispatchResult.addObject("lockAmount",adminAccount.getLockAmount().divide(new BigDecimal("100"),2,BigDecimal.ROUND_HALF_UP));
 
         BigDecimal sumLockAmount = defaultClient.getSumLockAmount(groupId);
+        if(null == sumLockAmount) {
+            sumLockAmount = new BigDecimal("0");
+        }
         dispatchResult.addObject("sumLockAmount",sumLockAmount.divide(new BigDecimal("100"),2,BigDecimal.ROUND_HALF_UP));
         dispatchResult.addObject("paidAmount",adminAccount.getPaidAmount().divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP));
         dispatchResult.addObject("totalIncome",(account.getAmount().subtract(account.getLockAmount())).divide(new BigDecimal("100"),2,BigDecimal.ROUND_HALF_UP));
