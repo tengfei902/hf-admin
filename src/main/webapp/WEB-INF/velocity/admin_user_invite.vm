@@ -310,7 +310,7 @@
     /*邀请码-删除*/
     function invite_del(obj, id) {
         layer.confirm('确认要删除吗？', function (index) {
-            $.ajax({
+            jQuery.ajax({
                 url:"/Admin_User_delInvitecode.html",
                 type:'post',
                 data:'id='+id,

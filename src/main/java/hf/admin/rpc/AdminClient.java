@@ -9,6 +9,7 @@ import hf.base.model.*;
 import hf.base.utils.Pagenation;
 import hf.base.utils.ResponseResult;
 
+import java.rmi.Remote;
 import java.util.List;
 import java.util.Map;
 
@@ -35,7 +36,8 @@ public class AdminClient extends BaseClient {
     private static final String USER_PASS = "/user/user_pass";
     private static final String SAVE_USER_INFO = "/user/save_user_info";
     private static final String SAVE_USER_GROUP = "/user/save_user_group";
-
+    private static final String FINISH_WITH_DRAW = "/settle/finish_with_draw";
+    private static final String WITH_DRAW_FAILED = "/settle/with_draw_failed";
 
     public AdminClient(String url) {
         this.url = url;
@@ -164,13 +166,25 @@ public class AdminClient extends BaseClient {
     }
 
     public Boolean saveUserInfo(Map<String,Object> params) {
-        RemoteParams remoteParams = new RemoteParams(url).withPath(SAVE_USER_INFO);
+        RemoteParams remoteParams = new RemoteParams(url).withPath(SAVE_USER_INFO).withParams(params);
         String result = super.post(remoteParams);
         return parseResult(result);
     }
 
     public Boolean saveUserGroup(Map<String,Object> params) {
         RemoteParams remoteParams = new RemoteParams(url).withPath(SAVE_USER_GROUP).withParams(params);
+        String result = super.post(remoteParams);
+        return parseResult(result);
+    }
+
+    public Boolean finishWithDraw(Long id) {
+        RemoteParams remoteParams = new RemoteParams(url).withPath(FINISH_WITH_DRAW).withParam("id",id);
+        String result = super.post(remoteParams);
+        return parseResult(result);
+    }
+
+    public Boolean withDrawFailed(Long id) {
+        RemoteParams remoteParams = new RemoteParams(url).withPath(WITH_DRAW_FAILED).withParam("id",id);
         String result = super.post(remoteParams);
         return parseResult(result);
     }

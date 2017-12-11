@@ -34,7 +34,7 @@ function logincheck(){
 	}
 	ajaxurl = $("#verification").attr("ajaxurl");
 	datastr = "code="+$("#verification").val();
-	$.ajax({
+	jquery.ajax({
 			type:'POST',
 			url:ajaxurl,
 			data:datastr,

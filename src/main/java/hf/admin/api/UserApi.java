@@ -9,6 +9,7 @@ import hf.base.biz.CacheService;
 import hf.base.client.DefaultClient;
 import hf.base.contants.CodeManager;
 import hf.base.dispatcher.DispatchResult;
+import hf.base.enums.WithDrawRole;
 import hf.base.model.*;
 import hf.base.utils.Pagenation;
 import hf.base.utils.ResponseResult;
@@ -239,16 +240,17 @@ public class UserApi {
     }
 
     @RequestMapping(value = "/save_user_info",method = RequestMethod.POST ,produces = "application/json;charset=UTF-8")
-    public ModelAndView saveUserInfo(@RequestBody Map<String,String> params) {
-        String loginId = params.get("loginId");
-        String password = params.get("password");
-        String name = params.get("name");
-        String idCard = params.get("idCard");
-        String tel = params.get("tel");
-        String qq = params.get("qq");
-        String address = params.get("address");
-        String groupId = params.get("userGroup");
-        String id = params.get("id");
+    public @ResponseBody Map<String,Object> saveUserInfo(HttpServletRequest request, HttpServletResponse response) {
+        String loginId = request.getParameter("loginId");
+        String password = request.getParameter("password");
+        String name = request.getParameter("name");
+        String idCard = request.getParameter("idCard");
+        String tel = request.getParameter("tel");
+        String qq = request.getParameter("qq");
+        String address = request.getParameter("address");
+        String id = request.getParameter("id");
+        String groupId = request.getParameter("group");
+        String type = request.getParameter("type");
 
         Map<String,Object> map = Utils.buildMap("loginId",loginId,
                 "password",password,
@@ -258,11 +260,12 @@ public class UserApi {
                 "qq",qq,
                 "address",address,
                 "groupId",groupId,
-                "id",id);
+                "id",id,
+                "type",type);
 
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("group_user_list");
-        return modelAndView;
+        boolean result = adminClient.saveUserInfo(map);
+
+        return MapUtils.buildMap("status",result);
     }
 
     @RequestMapping(value = "/save_user_group",method = RequestMethod.POST ,produces = "application/json;charset=UTF-8")
@@ -306,8 +309,8 @@ public class UserApi {
             tradeRequest.setMchId(request.getParameter("mchId"));
         }
 
-        if(!StringUtils.isEmpty(request.getParameter("outTradeNo"))) {
-            tradeRequest.setOutTradeNo(request.getParameter("outTradeNo"));
+        if(!StringUtils.isEmpty(request.getParameter("orderid"))) {
+            tradeRequest.setOutTradeNo(request.getParameter("orderid"));
         }
 
         if(!StringUtils.isEmpty(request.getParameter("type"))) {
@@ -331,6 +334,12 @@ public class UserApi {
 
         List<Channel> channels = adminClient.getChannelList();
         modelAndView.addObject("channels",channels);
+        modelAndView.addObject("urlParams",String.format("mchId=%s&orderid=%s&channelCode=%s&status=%s&type=%s",
+                StringUtils.isEmpty(tradeRequest.getMchId())?"":tradeRequest.getMchId(),
+                StringUtils.isEmpty(tradeRequest.getOutTradeNo())?"":tradeRequest.getOutTradeNo(),
+                StringUtils.isEmpty(tradeRequest.getChannelCode())?"":tradeRequest.getChannelCode(),
+                tradeRequest.getStatus()==null?"":tradeRequest.getStatus(),
+                tradeRequest.getType()==null?"":tradeRequest.getType()));
         return modelAndView;
     }
 
@@ -419,4 +428,52 @@ public class UserApi {
 
         return modelAndView;
     }
+
+    @RequestMapping(value = "/with_draw_finish",method = RequestMethod.POST ,produces = "application/json;charset=UTF-8")
+    public @ResponseBody Map<String,Object> finishWithDraw(HttpServletRequest request) {
+        String id = request.getParameter("id");
+        if(StringUtils.isBlank(id)){
+            return MapUtils.buildMap("res",false,"msg","参数错误");
+        }
+        boolean result = adminClient.finishWithDraw(Long.parseLong(id));
+        return MapUtils.buildMap("res",result);
+    }
+
+    @RequestMapping(value = "/with_draw_failed",method = RequestMethod.POST ,produces = "application/json;charset=UTF-8")
+    public @ResponseBody Map<String,Object> withDrawFailed(HttpServletRequest request) {
+        String id = request.getParameter("id");
+        if(StringUtils.isBlank(id)){
+            return MapUtils.buildMap("res",false,"msg","参数错误");
+        }
+        boolean result = adminClient.withDrawFailed(Long.parseLong(id));
+        return MapUtils.buildMap("res",result);
+    }
+
+    @RequestMapping(value = "/getWithDrawList",method = RequestMethod.GET)
+    public ModelAndView getWithDrawList(HttpServletRequest request) {
+        Long groupId = Long.parseLong(request.getSession().getAttribute("groupId").toString());
+        WithDrawRequest withDrawRequest = new WithDrawRequest();
+        withDrawRequest.setGroupId(groupId);
+        withDrawRequest.setCurrentPage(1);
+        withDrawRequest.setPageSize(15);
+        withDrawRequest.setRole(WithDrawRole.PAYER.getValue());
+
+        if(StringUtils.isNotEmpty(request.getParameter("status"))) {
+            withDrawRequest.setStatus(Integer.parseInt(request.getParameter("status")));
+        }
+        if(StringUtils.isNotEmpty(request.getParameter("mchId"))) {
+            withDrawRequest.setMchId(request.getParameter("mchId"));
+        }
+
+        Pagenation<WithDrawInfo> pagenation = client.getWithDrawPage(withDrawRequest);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("admin_withdrawal_index");
+        modelAndView.addObject("pageInfo",pagenation);
+        modelAndView.addObject("requestInfo",withDrawRequest);
+        modelAndView.addObject("urlParams",String.format("status=%s&mchId=%s",withDrawRequest.getStatus()==null?"":withDrawRequest.getStatus(),withDrawRequest.getMchId()==null?"":withDrawRequest.getMchId()));
+
+        return modelAndView;
+    }
+
+
 }

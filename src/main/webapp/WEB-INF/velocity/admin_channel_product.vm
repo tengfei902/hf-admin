@@ -693,7 +693,7 @@ layui.use(['layer', 'form'], function(){
   form.on('switch(switchStatus)', function(data){
 	var pid = $(this).attr('data-id'),
 	isopen = this.checked ? 1 : 0;
-	$.ajax({
+	jQuery.ajax({
 		url:"/Admin_Channel_prodStatus.html",
 		type:'post',
 		data:"id="+pid+"&v="+isopen+"&k=status",
@@ -711,7 +711,7 @@ layui.use(['layer', 'form'], function(){
   form.on('switch(switchDisplay)', function(data){
 	var pid = $(this).attr('data-id'),
 	isopen = this.checked ? 1 : 0;
-	$.ajax({
+	jQuery.ajax({
 		url:"/Admin_Channel_prodDisplay.html",
 		type:'post',
 		data:"id="+pid+"&v="+isopen+"&k=isdisplay",
@@ -763,7 +763,7 @@ layui.use(['layer', 'form'], function(){
  /*删除*/
 function admin_del(obj,id){
 	layer.confirm('确认要删除吗？',function(index){
-		$.ajax({
+		jQuery.ajax({
 			url:"/Admin_Channel_delProduct.html",
 			type:'post',
 			data:'pid='+id,

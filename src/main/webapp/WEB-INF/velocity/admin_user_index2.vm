@@ -180,7 +180,7 @@
         form.on('switch(switchStatus)', function (data) {
             var isopen = this.checked ? 1 : 0,
                     uid = $(this).attr('data-uid');
-            $.ajax({
+            jQuery.ajax({
                 url: "/Admin_User_editStatus.html",
                 type: 'post',
                 data: "uid=" + uid + "&isopen=" + isopen,
@@ -230,7 +230,7 @@
     /*用户-删除*/
     function member_del(obj, id) {
         layer.confirm('确认要删除吗？', function (index) {
-            $.ajax({
+            jQuery.ajax({
                 url:"/Admin_User_delUser.html",
                 type:'post',
                 data:'uid='+id,

@@ -251,7 +251,7 @@
             });
             //监听提交
             form.on('submit(save)', function (data) {
-                $.ajax({
+                jQuery.ajax({
                     url: "/Admin_Withdrawal_saveWithdrawal.html",
                     type: "post",
                     data: $('#profile').serialize(),
@@ -278,7 +278,7 @@
             laydate.render({
                 elem: '#setholiday'
                 ,done: function(value, date){
-                    $.ajax({
+                    jQuery.ajax({
                         url: "/Admin_Withdrawal_addHoliday.html",
                         type: "post",
                         data: "datetime="+value,
@@ -303,7 +303,7 @@
 
             //监听时间
             form.on('submit(time)', function (data) {
-                $.ajax({
+                jQuery.ajax({
                     url: "/Admin_Withdrawal_settimeEdit.html",
                     type: "post",
                     data: $('#settime').serialize(),
@@ -329,7 +329,7 @@
         //监听button
         function del_btn(obj,id){
             console.log(obj);
-            $.ajax({
+            jQuery.ajax({
                 url: "/Admin_Withdrawal_delHoliday.html",
                 type: "post",
                 data: "id="+id,
