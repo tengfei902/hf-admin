@@ -91,7 +91,7 @@
                             <th lay-data="{field:'tel', width:120}">联系电话</th>
                             <th lay-data="{field:'parentid', width:120}">上级用户</th>
                             <th lay-data="{field:'regdatetime', width:120}">注册时间</th>
-                            <th lay-data="{field:'op',width:380}">操作</th>
+                            <th lay-data="{field:'op',width:500}">操作</th>
                         </tr>
                         </thead>
                         <tbody>
