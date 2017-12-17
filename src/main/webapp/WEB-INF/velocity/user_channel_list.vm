@@ -66,7 +66,7 @@
                             </td>
                             <td>
                             <button class="layui-btn layui-btn-small"
-                                    onclick="bank_edit('编辑通道','/User_Account_addBankcard_id_47.html',600,400)"><i
+                                    onclick="bank_edit('编辑通道','#springUrl("/common/user_add_channel?groupId=$group&id=${channel.id}")',600,400)"><i
                                     class="layui-icon"></i></button>
                             <button class="layui-btn layui-btn-small"
                                     onclick="bank_del(this,'$channel.id')"><i

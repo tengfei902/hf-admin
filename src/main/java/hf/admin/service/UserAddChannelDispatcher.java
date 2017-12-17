@@ -4,6 +4,8 @@ import hf.admin.rpc.AdminClient;
 import hf.base.dispatcher.DispatchResult;
 import hf.base.dispatcher.Dispatcher;
 import hf.base.model.Channel;
+import hf.base.model.UserChannel;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +25,11 @@ public class UserAddChannelDispatcher implements Dispatcher {
         dispatchResult.addObject("channels",channels);
 
         String groupId = request.getParameter("groupId");
+        String id = request.getParameter("id");
+        if(StringUtils.isNotEmpty(id)) {
+            UserChannel userChannel = client.getUserChannelById(id);
+            dispatchResult.addObject("userChannel",userChannel);
+        }
         dispatchResult.addObject("group",groupId);
         return dispatchResult;
     }

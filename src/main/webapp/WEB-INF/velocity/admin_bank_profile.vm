@@ -78,6 +78,64 @@
                                        #end>
                             </div>
                         </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">商户编号：</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="mchId" lay-verify="" autocomplete="off" class="layui-input"
+                                    #if($card.mchId) value="$card.mchId" #else  value=""
+                                    #end>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">门店编号：</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="outletNo" lay-verify="" autocomplete="off" class="layui-input"
+                                    #if($card.outletNo) value="$card.outletNo" #else  value=""
+                                    #end>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">商户名：</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="name" lay-verify="" autocomplete="off" class="layui-input"
+                                    #if($card.name) value="$card.name" #else  value=""
+                                    #end>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">法人：</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="ownerName" lay-verify="" autocomplete="off" class="layui-input"
+                                    #if($card.ownerName) value="$card.ownerName" #else  value=""
+                                    #end>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">交易限额(元)：</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="limitAmount" lay-verify="" autocomplete="off" class="layui-input"
+                                    #if($card.limitAmount) value="$card.limitAmount" #else  value=""
+                                    #end>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">密钥：</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="cipherCode" lay-verify="" autocomplete="off" class="layui-input"
+                                    #if($card.cipherCode) value="$card.cipherCode" #else  value=""
+                                    #end>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">通道供应商：</label>
+                            <div class="layui-input-inline">
+                                <select name="channelNo">
+                                    <option value="">请选择</option>
+                                    <option value="fxt" #if(${card.channelNo}=="fxt") selected #end>富信通</option>
+                                    <option value="ys" #if(${card.channelNo}=="ys") selected #end>友收宝</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div class="layui-form-item">
                         <div class="layui-input-block">

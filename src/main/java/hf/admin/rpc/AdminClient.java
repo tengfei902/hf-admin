@@ -31,6 +31,8 @@ public class AdminClient extends BaseClient {
     private static final String SAVE_CHANNEL = "/user/save_channel";
     private static final String SAVE_USER_CHANNEL = "/user/save_user_channel";
     private static final String GET_ADMIN_BANK_CARD = "/user/get_admin_bank_card";
+    private static final String GET_ADMIN_BANK_CARD_LIST = "/user/get_admin_bank_card_list";
+    private static final String GET_ADMIN_BANK_CARD_BY_ID = "/user/get_admin_bank_card_by_id";
     private static final String SAVE_ADMIN_BANK_CARD = "/user/save_admin_bank_card";
     private static final String USER_TURN_BACK = "/user/user_turn_back";
     private static final String USER_PASS = "/user/user_pass";
@@ -146,6 +148,16 @@ public class AdminClient extends BaseClient {
         throw new BizFailException(response.getCode(),response.getMsg());
     }
 
+    public List<AdminBankCard> getAdminBankCardList(Long companyId,String channelNo) {
+        RemoteParams params = new RemoteParams(url).withPath(GET_ADMIN_BANK_CARD_LIST).withParam("companyId",companyId).withParam("channelNo",channelNo);
+        String result = super.post(params);
+        ResponseResult<List<AdminBankCard>> response = new Gson().fromJson(result,new TypeToken<ResponseResult<List<AdminBankCard>>>(){}.getType());
+        if(response.isSuccess()) {
+            return response.getData();
+        }
+        throw new BizFailException(response.getCode(),response.getMsg());
+    }
+
     public boolean saveAdminBankCard(Map<String,Object> data) {
         RemoteParams params = new RemoteParams(url).withPath(SAVE_ADMIN_BANK_CARD).withParams(data);
         String result = super.post(params);
@@ -189,6 +201,26 @@ public class AdminClient extends BaseClient {
         return parseResult(result);
     }
 
+    public UserChannel getUserChannelById(String id) {
+        RemoteParams remoteParams = new RemoteParams(url).withPath("/user/get_user_channel_by_id").withParam("id",id);
+        String result = super.post(remoteParams);
+        ResponseResult<UserChannel> response = new Gson().fromJson(result,new TypeToken<ResponseResult<UserChannel>>(){}.getType());
+        if(response.isSuccess()) {
+            return response.getData();
+        }
+        throw new BizFailException(response.getCode(),response.getMsg());
+    }
+
+    public AdminBankCard getAdminBankCardById(String id) {
+        RemoteParams remoteParams = new RemoteParams(url).withPath(GET_ADMIN_BANK_CARD_BY_ID).withParam("id",id);
+        String result = super.post(remoteParams);
+        ResponseResult<AdminBankCard> response = new Gson().fromJson(result,new TypeToken<ResponseResult<AdminBankCard>>(){}.getType());
+        if(response.isSuccess()) {
+            return response.getData();
+        }
+        throw new BizFailException(response.getCode(),response.getMsg());
+    }
+
     private Boolean parseResult(String result) {
         ResponseResult<Boolean> response = new Gson().fromJson(result,new TypeToken<ResponseResult<Boolean>>(){}.getType());
         if(response.isSuccess()) {
@@ -196,6 +228,4 @@ public class AdminClient extends BaseClient {
         }
         throw new BizFailException(response.getCode(),response.getMsg());
     }
-
-
 }

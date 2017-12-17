@@ -26,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -168,9 +169,25 @@ public class UserApi {
         String mchId = request.getParameter("mchId");
         String cipherCode = request.getParameter("cipherCode");
         String callbackUrl = request.getParameter("callbackUrl");
+        String id = request.getParameter("id");
 
-        boolean result = adminClient.saveUserChannel(MapUtils.buildMap("groupId",groupId,"channelId",channelId,"feeRate",feeRate,"mchId",mchId,"cipherCode",cipherCode,"callbackUrl",callbackUrl));
+        boolean result = adminClient.saveUserChannel(MapUtils.buildMap("id",id,"groupId",groupId,"channelId",channelId,"feeRate",feeRate,"mchId",mchId,"cipherCode",cipherCode,"callbackUrl",callbackUrl));
         return MapUtils.buildMap("status",result);
+    }
+
+    @RequestMapping(value = "/get_admin_bank_list",method = RequestMethod.POST)
+    public ModelAndView getAdminBankList(HttpServletRequest request) {
+        String companyId = request.getSession().getAttribute("groupId").toString();
+        String channelNo = request.getParameter("channelNo");
+        List<AdminBankCard> list = adminClient.getAdminBankCardList(Long.parseLong(companyId),channelNo);
+        list.stream().forEach(adminBankCard -> {
+            adminBankCard.setLimitAmount(adminBankCard.getLimitAmount().divide(new BigDecimal("100"),2,BigDecimal.ROUND_HALF_UP));
+        });
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("admin_bank_index");
+        modelAndView.addObject("cards",list);
+        modelAndView.addObject("channelNo",channelNo);
+        return modelAndView;
     }
 
     @RequestMapping(value = "/save_admin_bank_card",method = RequestMethod.POST)
@@ -183,10 +200,24 @@ public class UserApi {
         String province = request.getParameter("province");
         String city = request.getParameter("city");
         String companyId = request.getSession().getAttribute("groupId").toString();
-        String groupId = request.getParameter("group");
+        String groupId = "0";
+        String mchId = request.getParameter("mchId");
+        String outletNo = request.getParameter("outletNo");
+        String name = request.getParameter("name");
+        String ownerName = request.getParameter("ownerName");
+        String limitAmount = request.getParameter("limitAmount");
+        String cipherCode = request.getParameter("cipherCode");
+        String channelNo = request.getParameter("channelNo");
 
         boolean status = adminClient.saveAdminBankCard(MapUtils.buildMap("id",id,"bank",bank,"deposit",deposit,"owner",owner,
-                "bankNo",bankNo,"province",province,"city",city,"companyId",companyId,"groupId",groupId));
+                "bankNo",bankNo,"province",province,"city",city,"companyId",companyId,"groupId",groupId,
+                "mchId",mchId,
+                "outletNo",outletNo,
+                "name",name,
+                "ownerName",ownerName,
+                "limitAmount",new BigDecimal(limitAmount).multiply(new BigDecimal(100)),
+                "cipherCode",cipherCode,
+                "channelNo",channelNo));
 
         return MapUtils.buildMap("status",status);
     }

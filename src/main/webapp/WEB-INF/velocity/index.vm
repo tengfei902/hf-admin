@@ -24,7 +24,7 @@
     <!-- 头部开始 -->
     <div class="row head-bar" id="head-bar">
         <div class="col-lg-5 col-md-4 col-sm-3 col-xs-6 head-left">
-            <img src="#springUrl('/logo.png')"/>
+            <img src="#springUrl('/logo2.png')"/>
             <span class="hidden-xs hidden-sm">管理后台</span>
         </div>
         <div class="col-lg-7 col-md-8 col-sm-9 col-xs-6 head-right">
@@ -82,6 +82,7 @@
                         <li><a href="#springUrl('/common/admin_account_index')" class="J_menuItem">账户列表</a></li>
                         <li><a href="#springUrl('/common/admin_account_admin')" class="J_menuItem">管理员账户</a></li>
                         <li><a href="#springUrl('/common/admin_order_changeRecord')" class="J_menuItem">资金变动管理</a></li>
+                        <li><a href="#springUrl('/common/admin_bank_index')" class="J_menuItem">结算账户</a></li>
                     </ul>
                 </li>
                 <li class="nav-menu"><a href="#"> <i class="fa fa fa-cubes"></i> <span class="nav-label">提款管理</span></a>

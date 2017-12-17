@@ -53,7 +53,6 @@
                         </div>
                     </form>
                 </div>
-                <blockquote class="layui-elem-quote" style="font-size:14px;padding;8px;">成功交易总金额：<span class="label label-info">0元</span> 平台收入：<span class="label label-info">0元</span> 支付金额：<span class="label label-info">0元</span></blockquote>
                 <!--交易列表-->
                 <table class="layui-table" lay-data="{width:'100%',id:'userData'}">
                     <thead>
