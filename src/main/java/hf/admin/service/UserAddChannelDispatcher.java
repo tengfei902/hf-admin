@@ -18,11 +18,13 @@ public class UserAddChannelDispatcher implements Dispatcher {
 
     @Override
     public DispatchResult dispatch(HttpServletRequest request, String page) {
-        List<Channel> channels = client.getAvaChannelList();
+        String providerCode = request.getParameter("provider");
+        List<Channel> channels = client.getProviderChannelList(providerCode);
 
         DispatchResult dispatchResult = new DispatchResult();
         dispatchResult.setPage(page);
         dispatchResult.addObject("channels",channels);
+        dispatchResult.addObject("providerCode",providerCode);
 
         String groupId = request.getParameter("groupId");
         String id = request.getParameter("id");

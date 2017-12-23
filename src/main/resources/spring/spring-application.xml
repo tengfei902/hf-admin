@@ -80,6 +80,7 @@
 				<entry key="admin_withdrawal_index" value-ref="adminWithDrawDispatcher"/>
 				<entry key="dashboard" value-ref="dashboardDispatcher"/>
 				<entry key="admin_bank_index" value-ref="adminBankDispatcher"/>
+				<entry key="user_add_provider" value-ref="userAddProviderDispatcher"/>
 			</map>
 		</constructor-arg>
 	</bean>

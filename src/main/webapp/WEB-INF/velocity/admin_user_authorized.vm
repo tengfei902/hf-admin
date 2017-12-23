@@ -113,7 +113,7 @@
                                         #end
                                         <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('查看银行','#springUrl("/common/user_bankcard?id=${group.id}")',800)">银行</button>
                                         <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('用户列表','#springUrl("/common/group_user_list?groupId=${group.id}")',800)">用户列表</button>
-                                        <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('编辑通道','#springUrl("/common/user_channel_list?id=${group.id}")',800)">通道</button>
+                                        <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('编辑通道','#springUrl("/common/user_channel_list?id=${group.id}")',1200,1200)">通道</button>
 ##                                        <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('设置结算账号','#springUrl("/common/admin_bank_profile?id=${group.id}")',800)">设置结算账号</button>
                                         #if(${group.status}==1)
                                             <button class="layui-btn layui-btn-small lineblud" onclick="member_back(this,'${group.id}')">退回</button>

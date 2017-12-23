@@ -178,17 +178,23 @@ public class UserApi {
         return MapUtils.buildMap("res",result);
     }
 
+    @RequestMapping(value = "/update_user_channel_status",method = RequestMethod.POST)
+    public @ResponseBody Map<String,Object> updateUserChannelStatus(HttpServletRequest request) {
+        String channelId = request.getParameter("id");
+        String isopen = request.getParameter("isopen");
+        boolean result = adminClient.saveUserChannel(MapUtils.buildMap("id",channelId,"status",isopen));
+        return MapUtils.buildMap("res",result);
+    }
+
     @RequestMapping(value = "/save_user_channel",method = RequestMethod.POST)
     public @ResponseBody Map<String,Boolean> saveUserChannel(HttpServletRequest request) {
         String groupId = request.getParameter("group");
         String channelId = request.getParameter("channelId");
         String feeRate = request.getParameter("feeRate");
-        String mchId = request.getParameter("mchId");
-        String cipherCode = request.getParameter("cipherCode");
-        String callbackUrl = request.getParameter("callbackUrl");
         String id = request.getParameter("id");
+        String providerCode = request.getParameter("providerCode");
 
-        boolean result = adminClient.saveUserChannel(MapUtils.buildMap("id",id,"groupId",groupId,"channelId",channelId,"feeRate",feeRate,"mchId",mchId,"cipherCode",cipherCode,"callbackUrl",callbackUrl));
+        boolean result = adminClient.saveUserChannel(MapUtils.buildMap("id",id,"groupId",groupId,"channelId",channelId,"feeRate",feeRate,"providerCode",providerCode));
         return MapUtils.buildMap("status",result);
     }
 
@@ -524,4 +530,16 @@ public class UserApi {
     }
 
 
+    @RequestMapping(value = "/save_user_provider",method = RequestMethod.POST)
+    public @ResponseBody Map<String,Object> saveUserProvider(HttpServletRequest request) {
+        String userGroupId = request.getParameter("userGroupId");
+        String id = request.getParameter("id");
+        String providerCode = request.getParameter("providerCode");
+        String merchantNo = request.getParameter("merchantNo");
+        String outletNo = request.getParameter("outletNo");
+        String cipherCode = request.getParameter("cipherCode");
+
+        boolean result = client.saveUserGroupExt(MapUtils.buildMap("groupId",userGroupId,"id",id,"providerCode",providerCode,"merchantNo",merchantNo,"outletNo",outletNo,"cipherCode",cipherCode));
+        return MapUtils.buildMap("status",result);
+    }
 }

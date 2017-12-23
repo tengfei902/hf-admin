@@ -27,6 +27,7 @@
                 <form class="layui-form" action="" autocomplete="off" id="channelForm">
                     <input type="hidden" name="id" #if($userChannel) value="${userChannel.id}" #else value="" #end>
                     <input type="hidden" name="group" value="${group}">
+                    <input type="hidden" name="providerCode" value="${providerCode}">
                     <div class="layui-form-item">
                         <label class="layui-form-label">通道：</label>
                         <div class="layui-input-block">
@@ -38,58 +39,10 @@
                             </select>
                         </div>
                     </div>
-##                    <div class="layui-form-item">
-##                        <label class="layui-form-label">通道供应商：</label>
-##                        <div class="layui-input-block">
-##                            <input type="text" name="channelName" lay-verify="" autocomplete="off" placeholder=""
-##                                   class="layui-input" value="">
-##                        </div>
-##                    </div>
-##
-##                    <div class="layui-form-item">
-##                        <label class="layui-form-label">通道类型：</label>
-##                        <div class="layui-input-block">
-##                            <input type="text" name="channelCode" lay-verify="" autocomplete="off" placeholder=""
-##                                   class="layui-input" value="">
-##                        </div>
-##                    </div>
-##                    <div class="layui-form-item">
-##                        <label class="layui-form-label">标准费率：</label>
-##                        <div class="layui-input-block">
-##                            <input type="text" name="standardFeeRate" lay-verify="" autocomplete="off" placeholder=""
-##                                   class="layui-input" value="">
-##                        </div>
-##                    </div>
-##                    <div class="layui-form-item">
-##                        <div class="layui-inline">
-##                            <label class="layui-form-label">上级费率：</label>
-##                            <div class="layui-input-inline">
-##                                <input type="tel" name="subFeeRate" lay-verify="" autocomplete="off"
-##                                       class="layui-input" value="">
-##                            </div>
-##                        </div>
                         <div class="layui-inline">
                             <label class="layui-form-label">费率：</label>
                             <div class="layui-input-inline">
                                 <input type="text" name="feeRate" lay-verify="" autocomplete="off" class="layui-input" #if(${userChannel}) value="${userChannel.feeRate}" #else value="" #end>%
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">商户号：</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="mchId" lay-verify="" autocomplete="off" class="layui-input" #if($userChannel) value="${userChannel.mchId}" #else value="" #end>
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">密钥：</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="cipherCode" lay-verify="" autocomplete="off" class="layui-input" #if($userChannel) value="${userChannel.cipherCode}" #else value="" #end>
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">回调地址：</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="callbackUrl" lay-verify="" autocomplete="off" class="layui-input" #if($userChannel) value="${userChannel.callbackUrl}" #else value="" #end>
                             </div>
                         </div>
                     </div>
