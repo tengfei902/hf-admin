@@ -21,11 +21,26 @@
     <div class="row">
         <div class="col-sm-12">
             <form class="layui-form" action="#springUrl('/user/save_channel')" id="payaccess">
-                <input type="hidden" name="id" #if(${channel.id}) value="${channel.id}" #else value="" #end value="">
+                <input type="hidden" name="channelId" #if(${channel.id}) value="${channel.id}" #else value="" #end value="">
                 <div class="layui-form-item">
                     <label class="layui-form-label">供应商名称：</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="channelName" autocomplete="off" #if(${channel.channelName}) value="${channel.channelName}" #else value="" #end placeholder="供应商名称" class="layui-input">
+                    <div class="layui-input-inline">
+                        <select name="providerCode">
+                            #foreach($provider in $providers)
+                                <option value="$provider.code" #if(${channel.providerCode}==$provider.code) selected #end>$provider.name</option>
+                            #end
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">接口类型：</label>
+                    <div class="layui-input-inline">
+                        <select name="code">
+                            #foreach($channelNo in $channelNos)
+                                <option value="$channelNo.code" #if(${channelNo.code}==$channel.code) selected #end>$channelNo.name</option>
+                            #end
+                        </select>
                     </div>
                 </div>
 
@@ -36,22 +51,28 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">接口描述：</label>
+                    <label class="layui-form-label">接口名称：</label>
                     <div class="layui-input-block">
-                        <input type="text" name="codeDesc" #if(${channel.codeDesc}) value="${channel.codeDesc}" #else value="" #end autocomplete="off" class="layui-input">
+                        <input type="text" name="channelName" #if(${channel.channelName}) value="${channel.channelName}" #else value="" #end autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">费率：</label>
+                    <label class="layui-form-label">接口描述：</label>
                     <div class="layui-input-block">
-                        <input type="text" placeholder="费率" name="feeRate" #if(${channel.feeRate}) value="${channel.feeRate}" #else value="" #end autocomplete="off" class="layui-input">
+                        <input type="text" name="channelDesc" #if(${channel.channelDesc}) value="${channel.channelDesc}" #else value="" #end autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">费率(%)：</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="feeRate" #if(${channel.feeRate}) value="${channel.feeRate}" #else value="" #end autocomplete="off" class="layui-input">
                     </div>
                 </div>
 
                 <div class="layui-form-item">
                     <label class="layui-form-label">供应商域名：</label>
                     <div class="layui-input-block">
-                        <input type="text" name="url" autocomplete="off" #if(${channel.url}) value="${channel.url}" #else value="" #end placeholder="供应商域名" class="layui-input">
+                        <input type="text" name="url" autocomplete="off" #if(${channel.url}) value="${channel.url}" #else value="" #end class="layui-input">
                     </div>
                 </div>
 

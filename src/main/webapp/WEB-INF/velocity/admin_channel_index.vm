@@ -38,37 +38,37 @@
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
-
                                         <th>编号</th>
                                         <th>供应商</th>
+                                        <th>接口类型</th>
                                         <th>接口代码</th>
                                         <th>接口描述</th>
                                         <th>接口状态</th>
-										<th>费率</th>
-                                        <th>地址</th>
+										<th>费率(%)</th>
                                         <th>操作</th>
                                     </tr>
                                 </thead>
                                 <tbody>
 								#foreach($channel in $channels)
 								<tr>
-                                        <td>${channel.id}</td>
-                                        <td>${channel.channelName}</td>
-                                        <td>${channel.channelCode}</td>
-                                    	<td>${channel.codeDesc}</td>
-                                    	<td>
-                                        <div class="layui-form">
-                                            <input type="checkbox" name="status" value="${channel.status}" data-id="${channel.id}" #if(${channel.status}==0) checked #end data-name="联动优势" lay-skin="switch" lay-filter="switchTest" lay-text="开启|关闭">
-                                        </div>
-                                    	</td>
-										<td><span id="dfRate207">${channel.feeRate}</span></td>
-                                        <td>
-											<div class="layui-btn-group">
-											  <button class="layui-btn layui-btn-small" onclick="admin_edit('编辑供应商接口','#springUrl("/common/admin_add_channel?channelId=${channel.id}")')">编辑</button>
-											  <button class="layui-btn layui-btn-small" onclick="admin_del(this,'207')">删除</button>
-											</div>
-                                        </td>
-                                    </tr>
+									<td>${channel.id}</td>
+									<td>${channel.providerName}</td>
+                                    <td>${channel.code}</td>
+									<td>${channel.channelCode}</td>
+									<td>${channel.channelDesc}</td>
+									<td>
+									<div class="layui-form">
+										<input type="checkbox" name="status" value="${channel.status}" data-id="${channel.id}" #if(${channel.status}==0) checked #end data-name="通道" lay-skin="switch" lay-filter="switchTest" lay-text="开启|关闭">
+									</div>
+									</td>
+									<td><span id="dfRate207">${channel.feeRate}</span></td>
+									<td>
+										<div class="layui-btn-group">
+										  <button class="layui-btn layui-btn-small" onclick="admin_edit('编辑供应商接口','#springUrl("/common/admin_add_channel?channelId=${channel.id}")')">编辑</button>
+										  <button class="layui-btn layui-btn-small" onclick="admin_del(this,'${channel.id}')">删除</button>
+										</div>
+									</td>
+								</tr>
 								#end
                                 </tbody>
                             </table>
@@ -95,10 +95,10 @@ layui.use(['layer', 'form'], function(){
   //监听指定开关
   form.on('switch(switchTest)', function(data){
 	var pid = jQuery(this).attr('data-id'),
-	isopen = this.checked ? 0 : 99,
+	isopen = this.checked ? 0 : 1,
 	title = jQuery(this).attr('data-name');
       jQuery.ajax({
-		url:"/Admin_Channel_editStatus.html",
+		url:'#springUrl("/user/update_channel_status")',
 		type:'post',
 		data:"pid="+pid+"&isopen="+isopen,
 		success:function(res){
@@ -150,9 +150,9 @@ layui.use(['layer', 'form'], function(){
 function admin_del(obj,id){
 	layer.confirm('确认要删除吗？',function(index){
         jQuery.ajax({
-			url:"/Admin_Channel_delSupplier.html",
+			url:'#springUrl("/user/del_channel")',
 			type:'post',
-			data:'pid='+id,
+			data:'channelId='+id,
 			success:function(res){
 				if(res.status){
                     jQuery(obj).parents("tr").remove();

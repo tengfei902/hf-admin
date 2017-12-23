@@ -145,20 +145,37 @@ public class UserApi {
 
     @RequestMapping(value = "/save_channel",method = RequestMethod.POST)
     public @ResponseBody Map<String,Object> saveChannel(HttpServletRequest request) {
+        String channelId = request.getParameter("channelId");
+        String providerCode = request.getParameter("providerCode");
         String channelName = request.getParameter("channelName");
         String channelCode = request.getParameter("channelCode");
-        String codeDesc = request.getParameter("codeDesc");
+        String channelDesc = request.getParameter("channelDesc");
         String feeRate = request.getParameter("feeRate");
         String url = request.getParameter("url");
         String status = request.getParameter("status");
-
+        String code = request.getParameter("code");
         if(!NumberUtils.isNumber(feeRate)) {
             return MapUtils.buildMap("status",false,"msg","费率不能为空!");
         }
 
-        adminClient.saveChannel(MapUtils.buildMap("channelName",channelName,"channelCode",channelCode,"feeRate",feeRate,"url",url,"status",status,"codeDesc",codeDesc));
+        adminClient.saveChannel(MapUtils.buildMap("providerCode",providerCode,"channelName",channelName,"channelCode",channelCode,"channelDesc",channelDesc,"feeRate",feeRate,"url",url,"status",status,"channelId",channelId,"code",code));
 
         return MapUtils.buildMap("status",true);
+    }
+
+    @RequestMapping(value = "/del_channel",method = RequestMethod.POST)
+    public @ResponseBody Map<String,Object> delChannel(HttpServletRequest request) {
+        String channelId = request.getParameter("channelId");
+        boolean result = client.deleteChannel(channelId);
+        return MapUtils.buildMap("status",result);
+    }
+
+    @RequestMapping(value = "/update_channel_status",method = RequestMethod.POST)
+    public @ResponseBody Map<String,Object> updateChannelStatus(HttpServletRequest request) {
+        String channelId = request.getParameter("pid");
+        String isopen = request.getParameter("isopen");
+        boolean result = adminClient.saveChannel(MapUtils.buildMap("channelId",channelId,"status",isopen));
+        return MapUtils.buildMap("res",result);
     }
 
     @RequestMapping(value = "/save_user_channel",method = RequestMethod.POST)
