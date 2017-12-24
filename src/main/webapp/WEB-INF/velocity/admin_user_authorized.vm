@@ -84,11 +84,14 @@
                         <thead>
                         <tr>
                             <th lay-data="{field:'id',fixed: true,width:60}"></th>
+                            <th lay-data="{field:'groupNo', width:120}">商户编号</th>
                             <th lay-data="{field:'name', width:120}">商户名</th>
                             <th lay-data="{field:'ownerName', width:120}">法人</th>
                             <th lay-data="{field:'idCard', width:120}">身份证号</th>
                             <th lay-data="{field:'address', width:120}">地址</th>
                             <th lay-data="{field:'tel', width:120}">联系电话</th>
+                            <th lay-data="{field:'cipherCode', width:120}">密钥</th>
+                            <th lay-data="{field:'callbackUrl', width:120}">回调地址</th>
                             <th lay-data="{field:'parentid', width:120}">上级用户</th>
                             <th lay-data="{field:'regdatetime', width:120}">注册时间</th>
                             <th lay-data="{field:'op',width:500}">操作</th>
@@ -99,11 +102,14 @@
                             #foreach($group in ${pageInfo.data})
                             <tr>
                                 <td>${group.id}</td>
+                                <td>${group.groupNo}</td>
                                 <td>${group.name}</td>
                                 <td>${group.ownerName}</td>
                                 <td>${group.idCard}</td>
                                 <td>${group.address}</td>
                                 <td>${group.tel}</td>
+                                <td>${group.cipherCode}</td>
+                                <td>${group.callbackUrl}</td>
                                 <td>${group.subGroupName}</td>
                                 <td>$!date.format('yyyy-MM-dd HH:mm:ss ',$!group.createTime)</td>
                                 <td>

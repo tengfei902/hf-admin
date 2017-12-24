@@ -50,25 +50,36 @@
                         #foreach($provider in $providers)
                             #set( $index = 0)
                             #set($rows=$provider.userChannels.size())
-                            #foreach($channel in $provider.userChannels)
+                            #if($provider.userChannels.size()==0)
+                                <td aria-rowspan="$rows">$provider.userGroupExt.providerName</td>
+                                <td aria-rowspan="$rows">$provider.userGroupExt.merchantNo</td>
+                                <td aria-rowspan="$rows">$provider.userGroupExt.outletNo</td>
+                                <td aria-rowspan="$rows">$provider.userGroupExt.cipherCode</td>
+                                <td aria-rowspan="$rows">
+                                    <div class="layui-btn-group">
+                                        <button class="layui-btn layui-btn-small lineblud" onclick="bank_edit('编辑通道','#springUrl("/common/user_add_channel?groupId=$group&provider=$provider.userGroupExt.providerCode")',600,400)">添加通道</button>
+                                    </div>
+                                </td>
+                            #else
+                                #foreach($channel in $provider.userChannels)
                                 <tr>
-                                #if($index == 0)
-                                    <td aria-rowspan="$rows">$provider.userGroupExt.providerName</td>
-                                    <td aria-rowspan="$rows">$provider.userGroupExt.merchantNo</td>
-                                    <td aria-rowspan="$rows">$provider.userGroupExt.outletNo</td>
-                                    <td aria-rowspan="$rows">$provider.userGroupExt.cipherCode</td>
-                                    <td aria-rowspan="$rows">
-                                        <div class="layui-btn-group">
-                                            <button class="layui-btn layui-btn-small lineblud" onclick="bank_edit('编辑通道','#springUrl("/common/user_add_channel?groupId=$group&provider=$provider.userGroupExt.providerCode")',600,400)">添加通道</button>
-                                        </div>
-                                    </td>
-                                #else
-                                    <td aria-rowspan="$rows"></td>
-                                    <td aria-rowspan="$rows"></td>
-                                    <td aria-rowspan="$rows"></td>
-                                    <td aria-rowspan="$rows"></td>
-                                    <td aria-rowspan="$rows"></td>
-                                #end
+                                    #if($index == 0)
+                                        <td aria-rowspan="$rows">$provider.userGroupExt.providerName</td>
+                                        <td aria-rowspan="$rows">$provider.userGroupExt.merchantNo</td>
+                                        <td aria-rowspan="$rows">$provider.userGroupExt.outletNo</td>
+                                        <td aria-rowspan="$rows">$provider.userGroupExt.cipherCode</td>
+                                        <td aria-rowspan="$rows">
+                                            <div class="layui-btn-group">
+                                                <button class="layui-btn layui-btn-small lineblud" onclick="bank_edit('编辑通道','#springUrl("/common/user_add_channel?groupId=$group&provider=$provider.userGroupExt.providerCode")',600,400)">添加通道</button>
+                                            </div>
+                                        </td>
+                                    #else
+                                        <td aria-rowspan="$rows"></td>
+                                        <td aria-rowspan="$rows"></td>
+                                        <td aria-rowspan="$rows"></td>
+                                        <td aria-rowspan="$rows"></td>
+                                        <td aria-rowspan="$rows"></td>
+                                    #end
                                     <td>$channel.channelName</td>
                                     <td>$channel.channelCode</td>
                                     <td>$channel.subFeeRate</td>
@@ -89,7 +100,8 @@
                                                 class="layui-icon"></i></button>
                                     </td>
                                 </tr>
-                                #set( $index = $index+1)
+                                    #set( $index = $index+1)
+                                #end
                             #end
                         #end
                         </tbody>

@@ -182,8 +182,8 @@ public class UserApi {
     public @ResponseBody Map<String,Object> updateUserChannelStatus(HttpServletRequest request) {
         String channelId = request.getParameter("id");
         String isopen = request.getParameter("isopen");
-        boolean result = adminClient.saveUserChannel(MapUtils.buildMap("id",channelId,"status",isopen));
-        return MapUtils.buildMap("res",result);
+        ResponseResult<Boolean> result = adminClient.saveUserChannel(MapUtils.buildMap("id",channelId,"status",isopen));
+        return MapUtils.buildMap("res",result.getData(),"msg",result.getMsg());
     }
 
     @RequestMapping(value = "/save_user_channel",method = RequestMethod.POST)
@@ -194,8 +194,8 @@ public class UserApi {
         String id = request.getParameter("id");
         String providerCode = request.getParameter("providerCode");
 
-        boolean result = adminClient.saveUserChannel(MapUtils.buildMap("id",id,"groupId",groupId,"channelId",channelId,"feeRate",feeRate,"providerCode",providerCode));
-        return MapUtils.buildMap("status",result);
+        ResponseResult<Boolean> result = adminClient.saveUserChannel(MapUtils.buildMap("id",id,"groupId",groupId,"channelId",channelId,"feeRate",feeRate,"providerCode",providerCode));
+        return MapUtils.buildMap("status",result.getData(),"msg",result.getMsg());
     }
 
     @RequestMapping(value = "/get_admin_bank_list",method = RequestMethod.POST)
@@ -332,6 +332,8 @@ public class UserApi {
         String address = request.getParameter("address");
         String type = request.getParameter("type");
         String subGroupId = request.getParameter("subGroupId");
+        String cipherCode = request.getParameter("cipherCode");
+        String callbackUrl = request.getParameter("callbackUrl");
 
         Map<String,Object> map = MapUtils.buildMap("groupId",id,
                 "name",name,
@@ -340,7 +342,9 @@ public class UserApi {
                 "tel",tel,
                 "address",address,
                 "type",type,
-                "subGroupId",subGroupId);
+                "subGroupId",subGroupId,
+                "cipherCode",cipherCode,
+                "callbackUrl",callbackUrl);
         try {
             adminClient.saveUserGroup(map);
             return MapUtils.buildMap("status",true);

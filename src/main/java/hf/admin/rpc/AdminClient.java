@@ -125,10 +125,10 @@ public class AdminClient extends BaseClient {
         return parseResult(result);
     }
 
-    public boolean saveUserChannel(Map<String,Object> params) {
+    public ResponseResult<Boolean> saveUserChannel(Map<String,Object> params) {
         RemoteParams remoteParams = new RemoteParams(url).withPath(SAVE_USER_CHANNEL).withParams(params);
         String result = super.post(remoteParams);
-        return parseResult(result);
+        return new Gson().fromJson(result,new TypeToken<ResponseResult<Boolean>>(){}.getType());
     }
 
     public AdminBankCard getAdminBankCard(String groupId,String companyId) {

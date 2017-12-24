@@ -84,7 +84,7 @@
                             parent.layer.close(index);
                         });
                     }else{
-                        layer.alert("操作失败", {icon: 5},function () {
+                        layer.alert(res.msg, {icon: 5},function () {
                             parent.location.reload();
                             var index = parent.layer.getFrameIndex(window.name);
                             parent.layer.close(index);
