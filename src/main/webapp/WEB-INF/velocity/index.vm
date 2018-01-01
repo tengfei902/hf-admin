@@ -66,6 +66,11 @@
                     <li><a href="#springUrl('/common/admin_user_authorized')" class="J_menuItem">商户列表</a></li>
                 </ul>
                 </li>
+                <li class="nav-menu"><a href="#"> <i class="fa fa-film"></i> <span class="nav-label">业务员管理</span></a>
+                    <ul class="nav nav-second-level">
+                        <li><a href="#springUrl('/common/admin_sales_index')" class="J_menuItem">业务员列表</a></li>
+                    </ul>
+                </li>
                 <li class="nav-menu"><a href="#"> <i class="fa fa-bank"></i> <span class="nav-label">通道管理</span></a>
                 <ul class="nav nav-second-level">
                     <li><a href="#springUrl('/common/admin_channel_index')" class="J_menuItem">供应商通道管理</a></li>

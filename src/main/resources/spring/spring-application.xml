@@ -81,6 +81,8 @@
 				<entry key="dashboard" value-ref="dashboardDispatcher"/>
 				<entry key="admin_bank_index" value-ref="adminBankDispatcher"/>
 				<entry key="user_add_provider" value-ref="userAddProviderDispatcher"/>
+				<entry key="admin_sales_index" value-ref="adminSalesIndexDispatcher"/>
+				<entry key="admin_add_sale" value-ref="adminAddSaleDispatcher"/>
 			</map>
 		</constructor-arg>
 	</bean>

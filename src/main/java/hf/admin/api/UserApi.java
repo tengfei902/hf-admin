@@ -266,6 +266,17 @@ public class UserApi {
         }
     }
 
+    @RequestMapping(value = "/user_member_delete",method = RequestMethod.POST)
+    public @ResponseBody Map<String,Boolean> memberDelete(HttpServletRequest request) {
+        String id = request.getParameter("uid");
+        ResponseResult<Boolean> response = adminClient.memberDelete(id);
+        if(response.isSuccess()) {
+            return MapUtils.buildMap("status",true);
+        } else {
+            return MapUtils.buildMap("status",false,"msg",response.getMsg());
+        }
+    }
+
     @RequestMapping(value = "/save_bank_card",method = RequestMethod.POST)
     public @ResponseBody Map<String,Object> saveBankCard(HttpServletRequest request, HttpServletResponse response) {
         String groupId = request.getParameter("groupId");
@@ -545,5 +556,45 @@ public class UserApi {
 
         boolean result = client.saveUserGroupExt(MapUtils.buildMap("groupId",userGroupId,"id",id,"providerCode",providerCode,"merchantNo",merchantNo,"outletNo",outletNo,"cipherCode",cipherCode));
         return MapUtils.buildMap("status",result);
+    }
+
+    @RequestMapping(value = "/save_sale",method = RequestMethod.POST ,produces = "application/json;charset=UTF-8")
+    public @ResponseBody Map<String,Object> saveSale(HttpServletRequest request, HttpServletResponse response) {
+        String id = request.getParameter("id");
+        String name = request.getParameter("name");
+        if(StringUtils.isEmpty(name)) {
+            return MapUtils.buildMap("status",false,"msg","业务员不能为空");
+        }
+        String loginId = request.getParameter("loginId");
+        if(StringUtils.isEmpty(loginId)) {
+            return MapUtils.buildMap("status",false,"msg","登录名不能为空");
+        }
+
+        String password = request.getParameter("password");
+        if(StringUtils.isEmpty(password)) {
+            return MapUtils.buildMap("status",false,"msg","密码不能为空");
+        }
+
+        String idCard = request.getParameter("idCard");
+        if(StringUtils.isEmpty(idCard)) {
+            return MapUtils.buildMap("status",false,"msg","身份证号不能为空");
+        }
+        String tel = request.getParameter("tel");
+        if(StringUtils.isEmpty(tel)) {
+            return MapUtils.buildMap("status",false,"msg","手机号不能为空");
+        }
+        String qq = request.getParameter("qq");
+        if(StringUtils.isEmpty(qq)) {
+            return MapUtils.buildMap("status",false,"msg","QQ不能为空");
+        }
+        String address = request.getParameter("address");
+        if(StringUtils.isEmpty(address)) {
+            return MapUtils.buildMap("status",false,"msg","地址不能为空");
+        }
+        String subGroupId = request.getParameter("subGroupId");
+
+        ResponseResult<Boolean> responseResult = adminClient.saveSaleInfo(MapUtils.buildMap("name",name,"loginId",loginId,"idCard",idCard,"tel",tel,"qq",qq,"address",address,"subGroupId",subGroupId,"id",id));
+
+        return MapUtils.buildMap("status",responseResult.getData(),"msg",responseResult.getMsg());
     }
 }

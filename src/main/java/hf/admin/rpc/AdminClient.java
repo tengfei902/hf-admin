@@ -41,6 +41,9 @@ public class AdminClient extends BaseClient {
     private static final String SAVE_USER_GROUP = "/user/save_user_group";
     private static final String FINISH_WITH_DRAW = "/settle/finish_with_draw";
     private static final String WITH_DRAW_FAILED = "/settle/with_draw_failed";
+    private static final String MEMBER_DELETE = "/user/del_group";
+    private static final String GET_SALES_LIST = "/user/get_sales_list";
+    private static final String SAVE_SALE_INFO = "/user/save_sale_info";
 
     public AdminClient(String url) {
         this.url = url;
@@ -170,6 +173,13 @@ public class AdminClient extends BaseClient {
         return response;
     }
 
+    public ResponseResult<Boolean> memberDelete(String id) {
+        RemoteParams params = new RemoteParams(url).withPath(MEMBER_DELETE).withParam("groupId",id);
+        String result = super.post(params);
+        ResponseResult<Boolean> response = new Gson().fromJson(result,new TypeToken<ResponseResult<Boolean>>(){}.getType());
+        return response;
+    }
+
     public Boolean saveUserInfo(Map<String,Object> params) {
         RemoteParams remoteParams = new RemoteParams(url).withPath(SAVE_USER_INFO).withParams(params);
         String result = super.post(remoteParams);
@@ -230,5 +240,18 @@ public class AdminClient extends BaseClient {
             return response.getData();
         }
         throw new BizFailException(response.getCode(),response.getMsg());
+    }
+
+    public List<SalesManDto> getSalesList(String groupId) {
+        RemoteParams remoteParams = new RemoteParams(url).withPath(GET_SALES_LIST).withParam("groupId",groupId);
+        String result = super.post(remoteParams);
+        ResponseResult<List<SalesManDto>> response = new Gson().fromJson(result,new TypeToken<ResponseResult<List<SalesManDto>>>(){}.getType());
+        return response.getData();
+    }
+
+    public ResponseResult<Boolean> saveSaleInfo(Map<String,Object> map) {
+        RemoteParams params = new RemoteParams(url).withPath(SAVE_SALE_INFO).withParams(map);
+        String result = super.post(params);
+        return new Gson().fromJson(result,new TypeToken<ResponseResult<Boolean>>(){}.getType());
     }
 }
