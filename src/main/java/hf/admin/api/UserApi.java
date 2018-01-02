@@ -597,4 +597,13 @@ public class UserApi {
 
         return MapUtils.buildMap("status",responseResult.getData(),"msg",responseResult.getMsg());
     }
+
+    @RequestMapping(value = "/edit_sub_group",method = RequestMethod.POST ,produces = "application/json;charset=UTF-8")
+    public @ResponseBody Map<String,Object> editSubGroup(HttpServletRequest request, HttpServletResponse response) {
+        String groupId = request.getParameter("id");
+        String subGroupId = request.getParameter("subGroupId");
+
+        ResponseResult<Boolean> responseResult = adminClient.editSubGroup(MapUtils.buildMap("groupId",groupId,"subGroupId",subGroupId));
+        return MapUtils.buildMap("status",responseResult.getData(),"msg",responseResult.getMsg());
+    }
 }

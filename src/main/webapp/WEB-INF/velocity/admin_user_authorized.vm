@@ -114,9 +114,13 @@
                                 <td>$!date.format('yyyy-MM-dd HH:mm:ss ',$!group.createTime)</td>
                                 <td>
                                     <div class="layui-btn-group">
-                                        #if(${group.status}!=10 && ${group.status}!=99) {
+                                        #if(${group.status}!=10 && ${group.status}!=99)
                                             <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('编辑','#springUrl("/common/admin_add_group?editedGroupId=${group.id}")',800)">编辑</button>
                                         #end
+                                        #if(${group.status}==10 && ${group.type}!=10)
+                                            <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('调整上级','#springUrl("/common/edit_sub_group?editedGroupId=${group.id}")',800)">调整上级</button>
+                                        #end
+
                                         <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('查看银行','#springUrl("/common/user_bankcard?id=${group.id}")',800)">银行</button>
                                         <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('用户列表','#springUrl("/common/group_user_list?groupId=${group.id}")',800)">用户列表</button>
                                         <button class="layui-btn layui-btn-small lineblud" onclick="member_edit('编辑通道','#springUrl("/common/user_channel_list?id=${group.id}")',1200,1200)">通道</button>

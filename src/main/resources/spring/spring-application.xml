@@ -83,6 +83,7 @@
 				<entry key="user_add_provider" value-ref="userAddProviderDispatcher"/>
 				<entry key="admin_sales_index" value-ref="adminSalesIndexDispatcher"/>
 				<entry key="admin_add_sale" value-ref="adminAddSaleDispatcher"/>
+				<entry key="edit_sub_group" value-ref="editSubGroupDispatcher"/>
 			</map>
 		</constructor-arg>
 	</bean>

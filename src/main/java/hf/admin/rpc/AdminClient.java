@@ -44,6 +44,7 @@ public class AdminClient extends BaseClient {
     private static final String MEMBER_DELETE = "/user/del_group";
     private static final String GET_SALES_LIST = "/user/get_sales_list";
     private static final String SAVE_SALE_INFO = "/user/save_sale_info";
+    private static final String EDIT_SUB_GROUP = "/user/edit_sub_group";
 
     public AdminClient(String url) {
         this.url = url;
@@ -252,6 +253,12 @@ public class AdminClient extends BaseClient {
     public ResponseResult<Boolean> saveSaleInfo(Map<String,Object> map) {
         RemoteParams params = new RemoteParams(url).withPath(SAVE_SALE_INFO).withParams(map);
         String result = super.post(params);
+        return new Gson().fromJson(result,new TypeToken<ResponseResult<Boolean>>(){}.getType());
+    }
+
+    public ResponseResult<Boolean> editSubGroup(Map<String,Object> map) {
+        RemoteParams remoteParams = new RemoteParams(url).withPath(EDIT_SUB_GROUP).withParams(map);
+        String result = super.post(remoteParams);
         return new Gson().fromJson(result,new TypeToken<ResponseResult<Boolean>>(){}.getType());
     }
 }
