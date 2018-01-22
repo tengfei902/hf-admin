@@ -135,6 +135,14 @@ public class AdminClient extends BaseClient {
         return new Gson().fromJson(result,new TypeToken<ResponseResult<Boolean>>(){}.getType());
     }
 
+    public ResponseResult<Boolean> updateUserChannelStatus(Map<String,Object> params) {
+        RemoteParams remoteParams = new RemoteParams(url).withPath("/user/update_user_channel_status").withParams(params);
+        String result = super.post(remoteParams);
+        return new Gson().fromJson(result,new TypeToken<ResponseResult<Boolean>>(){}.getType());
+    }
+
+
+
     public AdminBankCard getAdminBankCard(String groupId,String companyId) {
         RemoteParams params = new RemoteParams(url).withPath(GET_ADMIN_BANK_CARD).withParam("groupId",groupId).withParam("companyId",companyId);
         String result = super.post(params);

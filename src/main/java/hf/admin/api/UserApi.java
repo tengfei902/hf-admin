@@ -182,7 +182,7 @@ public class UserApi {
     public @ResponseBody Map<String,Object> updateUserChannelStatus(HttpServletRequest request) {
         String channelId = request.getParameter("id");
         String isopen = request.getParameter("isopen");
-        ResponseResult<Boolean> result = adminClient.saveUserChannel(MapUtils.buildMap("id",channelId,"status",isopen));
+        ResponseResult<Boolean> result = adminClient.updateUserChannelStatus(MapUtils.buildMap("id",channelId,"status",isopen));
         return MapUtils.buildMap("res",result.getData(),"msg",result.getMsg());
     }
 
