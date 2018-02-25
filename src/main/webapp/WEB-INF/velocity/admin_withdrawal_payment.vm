@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html><head><link id="layuicss-laydate" rel="stylesheet" href="http://demo.ddi9.com/Public/Front/js/plugins/layui/css/modules/laydate/default/laydate.css?v=5.0.2" media="all"><link id="layuicss-layer" rel="stylesheet" href="http://demo.ddi9.com/Public/Front/js/plugins/layui/css/modules/layer/default/layer.css?v=3.0.3" media="all"><link id="layuicss-skincodecss" rel="stylesheet" href="http://demo.ddi9.com/Public/Front/js/plugins/layui/css/modules/code.css" media="all"></head><body class="gray-bg"><div class="bread"><span class="bread-title">您的当前位置 : </span>提款管理 &gt;&gt; 代付管理</div>
+<html><head><link id="layuicss-laydate" rel="stylesheet" href="#springUrl('/Public/Front/js/plugins/layui/css/modules/laydate/default/laydate.css?v=5.0.2')" media="all"><link id="layuicss-layer" rel="stylesheet" href="http://demo.ddi9.com/Public/Front/js/plugins/layui/css/modules/layer/default/layer.css?v=3.0.3" media="all"><link id="layuicss-skincodecss" rel="stylesheet" href="http://demo.ddi9.com/Public/Front/js/plugins/layui/css/modules/code.css" media="all"></head><body class="gray-bg"><div class="bread"><span class="bread-title">您的当前位置 : </span>提款管理 &gt;&gt; 代付管理</div>
 
 
     <meta charset="utf-8">

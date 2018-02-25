@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link id="layuicss-layer" rel="stylesheet" href="http://demo.ddi9.com/Public/Front/js/plugins/layui/css/modules/layer/default/layer.css?v=3.0.3" media="all">
+<link id="layuicss-layer" rel="stylesheet" href="#springUrl('/Public/Front/js/plugins/layui/css/modules/layer/default/layer.css?v=3.0.3')" media="all">
 </head>
 <body class="gray-bg">
 <div class="bread"><span class="bread-title">您的当前位置 : </span>通道管理 &gt;&gt; 供应商通道管理</div>
